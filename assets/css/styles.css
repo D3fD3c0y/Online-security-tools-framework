@@ -136,11 +136,47 @@ input[type="search"] {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.build-theme-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+.build-badge-inline {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  min-width: 170px;
+}
+
+.build-badge__version {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: right;
+}
+
+.build-badge__time {
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .toolbar {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) auto auto;
+  grid-template-columns: minmax(280px, 1fr) auto auto auto;
   gap: 0.75rem;
   align-items: center;
 }
@@ -434,6 +470,16 @@ mark {
   border-color: var(--accent);
 }
 
+#copy-share-btn.copied {
+  border-color: color-mix(in srgb, var(--success) 55%, var(--border));
+  color: var(--success);
+}
+
+#copy-share-btn.copy-failed {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+  color: var(--danger);
+}
+
 .legend-card {
   margin-top: 1rem;
   padding: 0.9rem 1rem 1rem;
@@ -566,38 +612,6 @@ mark {
   color: var(--muted);
 }
 
-.build-badge {
-  position: fixed;
-  top: 0.9rem;
-  right: 0.9rem;
-  z-index: 1200;
-  display: inline-flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--panel) 92%, transparent);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(8px);
-  max-width: min(92vw, 280px);
-}
-
-.build-badge__version {
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: var(--accent);
-  text-align: right;
-}
-
-.build-badge__time {
-  font-size: 0.76rem;
-  color: var(--muted);
-  text-align: right;
-  line-height: 1.35;
-  word-break: break-word;
-}
-
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;
@@ -633,9 +647,16 @@ mark {
     align-items: stretch;
   }
 
-  .build-badge {
-    top: 0.6rem;
-    right: 0.6rem;
+  .hero-actions {
+    align-items: stretch;
+  }
+
+  .build-theme-stack {
+    width: 100%;
+  }
+
+  .build-badge-inline {
+    width: 100%;
   }
 }
 
@@ -652,10 +673,12 @@ mark {
     grid-template-columns: 1fr;
   }
 
-  .build-badge {
-    position: static;
-    margin: 0.75rem auto 0;
-    max-width: 100%;
-    width: fit-content;
+  .build-theme-stack {
+    width: 100%;
+  }
+
+  .build-badge-inline {
+    width: 100%;
+    min-width: 0;
   }
 }

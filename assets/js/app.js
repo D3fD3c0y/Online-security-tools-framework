@@ -1,4 +1,3 @@
-
 const treeContainer = document.getElementById('tree-container');
 const detailsContainer = document.getElementById('details-container');
 const searchInput = document.getElementById('search-input');
@@ -172,6 +171,66 @@ function computeDerivedStats(node) {
   };
 }
 
+function getSelfMatchScore(node, query) {
+  if (!query) return 0;
+
+  const q = query.trim().toLowerCase();
+  if (!q) return 0;
+
+  const name = node.displayNameLower || '';
+  const desc = node.displayDescriptionLower || '';
+  const url = node.urlLower || '';
+  const words = q.split(/\s+/).filter(Boolean);
+
+  let score = 0;
+
+  if (name === q) {
+    score = Math.max(score, 1000);
+  } else if (name.startsWith(q)) {
+    score = Math.max(score, 850);
+  } else if (name.includes(q)) {
+    score = Math.max(score, 700);
+  }
+
+  if (desc === q) {
+    score = Math.max(score, 600);
+  } else if (desc.startsWith(q)) {
+    score = Math.max(score, 450);
+  } else if (desc.includes(q)) {
+    score = Math.max(score, 300);
+  }
+
+  if (url.includes(q)) {
+    score = Math.max(score, 180);
+  }
+
+  for (const word of words) {
+    if (!word) continue;
+
+    if (name === word) {
+      score += 120;
+    } else if (name.startsWith(word)) {
+      score += 75;
+    } else if (name.includes(word)) {
+      score += 45;
+    }
+
+    if (desc.includes(word)) {
+      score += 12;
+    }
+
+    if (url.includes(word)) {
+      score += 5;
+    }
+  }
+
+  if (node.isFolder && score > 0) {
+    score += 15;
+  }
+
+  return score;
+}
+
 function enrichTree(node, parent = null, depth = 0) {
   node.id = `node-${idCounter++}`;
   node.parent = parent;
@@ -182,6 +241,9 @@ function enrichTree(node, parent = null, depth = 0) {
 
   node.displayName = getNodeLabel(node);
   node.displayDescription = getNodeDescription(node);
+  node.displayNameLower = node.displayName.toLowerCase();
+  node.displayDescriptionLower = node.displayDescription.toLowerCase();
+  node.urlLower = (node.url || '').toLowerCase();
 
   node.searchText = [
     node.displayName,
@@ -192,6 +254,9 @@ function enrichTree(node, parent = null, depth = 0) {
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
+
+  node.matchScore = 0;
+  node.selfMatchScore = 0;
 
   allNodes.push(node);
   node.children.forEach(child => enrichTree(child, node, depth + 1));
@@ -209,12 +274,28 @@ function evaluateMatches(node, query) {
 
   node.selfMatches = selfMatches;
   node.queryMatches = selfMatches || childMatches;
+  node.selfMatchScore = getSelfMatchScore(node, query);
 
   if (node.isFolder) {
     const anyVisibleChild = node.children.some(child => child.visible);
     node.visible = accountPass && (selfMatches || anyVisibleChild || !query);
   } else {
     node.visible = accountPass && selfMatches;
+  }
+
+  const visibleChildScores = node.children
+    .filter(child => child.visible)
+    .map(child => child.matchScore || 0);
+
+  const bestChildScore = visibleChildScores.length ? Math.max(...visibleChildScores) : 0;
+
+  if (!query) {
+    node.matchScore = 0;
+  } else if (node.isFolder) {
+    // A folder with matching descendants should rise, but direct folder matches still matter.
+    node.matchScore = Math.max(node.selfMatchScore, bestChildScore > 0 ? bestChildScore - 1 : 0);
+  } else {
+    node.matchScore = node.visible ? node.selfMatchScore : 0;
   }
 
   return node.queryMatches;
@@ -401,6 +482,40 @@ function appendBadge(row, className, text, title = '') {
   row.appendChild(badge);
 }
 
+function getSortedChildren(node) {
+  const children = [...node.children];
+
+  if (!currentQuery) {
+    return children;
+  }
+
+  children.sort((a, b) => {
+    if (a.visible !== b.visible) {
+      return a.visible ? -1 : 1;
+    }
+
+    if ((b.matchScore || 0) !== (a.matchScore || 0)) {
+      return (b.matchScore || 0) - (a.matchScore || 0);
+    }
+
+    if (a.selfMatches !== b.selfMatches) {
+      return a.selfMatches ? -1 : 1;
+    }
+
+    if (a.isFolder !== b.isFolder) {
+      return a.isFolder ? -1 : 1;
+    }
+
+    if ((b.resourceCount || 0) !== (a.resourceCount || 0)) {
+      return (b.resourceCount || 0) - (a.resourceCount || 0);
+    }
+
+    return (a.displayName || '').localeCompare(b.displayName || '', undefined, { sensitivity: 'base' });
+  });
+
+  return children;
+}
+
 function makeTreeNode(node) {
   const li = document.createElement('li');
   li.className = 'tree-node';
@@ -511,7 +626,7 @@ function makeTreeNode(node) {
       childList.classList.add('collapsed');
     }
 
-    node.children.forEach(child => {
+    getSortedChildren(node).forEach(child => {
       childList.appendChild(makeTreeNode(child));
     });
 

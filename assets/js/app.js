@@ -20,6 +20,7 @@ let expanded = new Set();
 let selectedId = null;
 let currentQuery = '';
 let showNoAccountOnly = false;
+let pendingSelectedPath = '';
 const allNodes = [];
 
 function decodeHtmlEntities(value = '') {
@@ -48,6 +49,40 @@ function highlight(text, query) {
   return safeText.replace(pattern, '<mark>$1</mark>');
 }
 
+function getNodeLabel(node) {
+  return decodeHtmlEntities(node?.name || '');
+}
+
+function getNodeDescription(node) {
+  return decodeHtmlEntities(node?.description || '');
+}
+
+function getNodePath(node) {
+  const parts = [];
+  let current = node;
+
+  while (current) {
+    parts.unshift(getNodeLabel(current));
+    current = current.parent;
+  }
+
+  return parts.join(' > ');
+}
+
+function findNodeByPath(path) {
+  if (!path) return null;
+  return allNodes.find(node => getNodePath(node) === path) || null;
+}
+
+function expandAncestors(node) {
+  let current = node?.parent || null;
+
+  while (current) {
+    expanded.add(current.id);
+    current = current.parent;
+  }
+}
+
 function enrichTree(node, parent = null, depth = 0) {
   node.id = `node-${idCounter++}`;
   node.parent = parent;
@@ -56,8 +91,8 @@ function enrichTree(node, parent = null, depth = 0) {
   node.isFolder = node.children.length > 0;
   node.requiresAccount = Boolean(node.requiresAccount);
 
-  node.displayName = decodeHtmlEntities(node.name || '');
-  node.displayDescription = decodeHtmlEntities(node.description || '');
+  node.displayName = getNodeLabel(node);
+  node.displayDescription = getNodeDescription(node);
 
   node.searchText = [
     node.displayName,
@@ -77,8 +112,7 @@ function enrichTree(node, parent = null, depth = 0) {
 function evaluateMatches(node, query) {
   const selfMatches = !query || node.searchText.includes(query);
 
-  // IMPORTANT FIX:
-  // Evaluate ALL children first, then determine whether any matched.
+  // IMPORTANT: evaluate every child before deciding visibility.
   const childResults = node.children.map(child => evaluateMatches(child, query));
   const childMatches = childResults.some(Boolean);
 
@@ -212,6 +246,10 @@ function makeTreeNode(node) {
       } else {
         expanded.add(node.id);
       }
+
+      selectedId = node.id;
+      expandAncestors(node);
+      renderDetails(node);
       render();
     });
 
@@ -252,6 +290,7 @@ function makeTreeNode(node) {
       expanded.add(node.id);
     }
 
+    expandAncestors(node);
     renderDetails(node);
     render();
   });
@@ -292,6 +331,58 @@ function makeTreeNode(node) {
   return li;
 }
 
+function readUrlState() {
+  const params = new URLSearchParams(window.location.search);
+
+  currentQuery = (params.get('q') || '').trim().toLowerCase();
+  showNoAccountOnly = params.get('noacct') === '1';
+  pendingSelectedPath = params.get('sel') || '';
+
+  searchInput.value = currentQuery;
+  accountFilter.checked = showNoAccountOnly;
+}
+
+function writeUrlState() {
+  const params = new URLSearchParams();
+
+  if (currentQuery) {
+    params.set('q', currentQuery);
+  }
+
+  if (showNoAccountOnly) {
+    params.set('noacct', '1');
+  }
+
+  const selectedNode = allNodes.find(node => node.id === selectedId);
+  if (selectedNode) {
+    params.set('sel', getNodePath(selectedNode));
+  }
+
+  const search = params.toString();
+  const newUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
+
+  window.history.replaceState({}, '', newUrl);
+}
+
+function applySelectionFromPendingPath() {
+  const restoredNode = findNodeByPath(pendingSelectedPath);
+
+  if (restoredNode) {
+    selectedId = restoredNode.id;
+    expandAncestors(restoredNode);
+
+    if (restoredNode.isFolder) {
+      expanded.add(restoredNode.id);
+    }
+
+    renderDetails(restoredNode);
+    return;
+  }
+
+  selectedId = root?.id || null;
+  renderDetails(root);
+}
+
 function render() {
   if (!root) return;
 
@@ -314,6 +405,8 @@ function render() {
     selectedId = null;
     renderDetails(null);
   }
+
+  writeUrlState();
 }
 
 function expandAllFolders() {
@@ -326,6 +419,15 @@ function expandAllFolders() {
 
 function collapseAllFolders() {
   resetExpansion();
+
+  const selectedNode = allNodes.find(node => node.id === selectedId);
+  if (selectedNode) {
+    expandAncestors(selectedNode);
+    if (selectedNode.isFolder) {
+      expanded.add(selectedNode.id);
+    }
+  }
+
   render();
 }
 
@@ -351,12 +453,13 @@ async function init() {
   idCounter = 0;
   selectedId = null;
 
+  readUrlState();
+
   root = enrichTree(data);
   resetExpansion();
   applyThemePreference();
+  applySelectionFromPendingPath();
 
-  renderDetails(root);
-  selectedId = root.id;
   render();
 }
 
@@ -365,6 +468,14 @@ searchInput.addEventListener('input', () => {
 
   if (!currentQuery && !showNoAccountOnly) {
     resetExpansion();
+
+    const selectedNode = allNodes.find(node => node.id === selectedId);
+    if (selectedNode) {
+      expandAncestors(selectedNode);
+      if (selectedNode.isFolder) {
+        expanded.add(selectedNode.id);
+      }
+    }
   }
 
   render();
@@ -375,6 +486,14 @@ accountFilter.addEventListener('change', () => {
 
   if (!currentQuery && !showNoAccountOnly) {
     resetExpansion();
+
+    const selectedNode = allNodes.find(node => node.id === selectedId);
+    if (selectedNode) {
+      expandAncestors(selectedNode);
+      if (selectedNode.isFolder) {
+        expanded.add(selectedNode.id);
+      }
+    }
   }
 
   render();
@@ -387,6 +506,15 @@ clearSearchBtn.addEventListener('click', () => {
   showNoAccountOnly = false;
 
   resetExpansion();
+
+  const selectedNode = allNodes.find(node => node.id === selectedId);
+  if (selectedNode) {
+    expandAncestors(selectedNode);
+    if (selectedNode.isFolder) {
+      expanded.add(selectedNode.id);
+    }
+  }
+
   render();
 });
 
@@ -399,6 +527,28 @@ themeToggleBtn.addEventListener('click', () => {
   localStorage.setItem('sst-theme', isLight ? 'light' : 'dark');
 });
 
+window.addEventListener('popstate', () => {
+  if (!root) return;
+
+  readUrlState();
+  resetExpansion();
+  applySelectionFromPendingPath();
+  render();
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === '/' && document.activeElement !== searchInput) {
+    event.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+
+  if (event.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.blur();
+  }
+});
+
 init().catch(error => {
   treeContainer.innerHTML = `<div class="details-card"><h3>Could not load data</h3><p>${escapeHtml(String(error))}</p></div>`;
 });
+``

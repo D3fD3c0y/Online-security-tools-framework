@@ -14,7 +14,7 @@ const statVisible = document.getElementById('stat-visible');
 const statAccount = document.getElementById('stat-account');
 
 const BUILD_META = {
-  version: 'v0.6.0',
+  version: 'v0.7.0',
   pushedAt: '2026-03-16 08:44 GMT-04:00'
 };
 
@@ -271,7 +271,6 @@ function enrichTree(node, parent = null, depth = 0) {
 function evaluateMatches(node, query) {
   const selfMatches = !query || node.searchText.includes(query);
 
-  // Evaluate every child first so visibility is computed correctly for all branches.
   const childResults = node.children.map(child => evaluateMatches(child, query));
   const childMatches = childResults.some(Boolean);
 
@@ -401,6 +400,11 @@ function getMatchingCategories(limit = 6) {
       return (a.node.displayName || '').localeCompare(b.node.displayName || '', undefined, { sensitivity: 'base' });
     })
     .slice(0, limit);
+}
+
+function buildActionLink(url, text, className) {
+  if (!url) return '';
+  return `<a class="${className}" href="${escapeHtml(url)}" target="_blank" rel="noreferrer noopener">${escapeHtml(text)}</a>`;
 }
 
 function renderStats() {
@@ -566,14 +570,6 @@ function renderDetails(node) {
     ? `<span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>`
     : '';
 
-  const openAction = !node.isFolder && node.url
-    ? `<a class="primary-link" href="${escapeHtml(node.url)}" target="_blank" rel="noreferrer noopener">Open resource</a>`
-    : '';
-
-  const secondaryAction = node.url
-    ? `<a class="secondary-btn" href="${escapeHtml(node.url)}" target="_blank" rel="noreferrer noopener">Open in new tab</a>`
-    : '';
-
   const pathBadge = `<span class="badge path-badge">${escapeHtml(getNodePath(node))}</span>`;
 
   const extraPanel = node === root || node.isFolder
@@ -603,8 +599,8 @@ function renderDetails(node) {
       ${pathBadge}
     </div>
     <div class="details-actions">
-      ${openAction}
-      ${secondaryAction}
+      ${buildActionLink(!node.isFolder ? node.url : '', 'Open resource', 'primary-link')}
+      ${buildActionLink(node.url, 'Open in new tab', 'secondary-btn')}
     </div>
     ${extraPanel}
   `;
@@ -815,20 +811,103 @@ function applySelectionFromPendingPath() {
   renderDetails(root);
 }
 
-function ensureBuildBadge() {
-  let badge = document.getElementById('build-badge');
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
 
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  let success = false;
+  try {
+    success = document.execCommand('copy');
+  } finally {
+    document.body.removeChild(textarea);
+  }
+
+  if (!success) {
+    throw new Error('Clipboard copy failed');
+  }
+
+  return true;
+}
+
+function ensureBuildMetaPlacement() {
+  const actionsContainer = themeToggleBtn?.parentElement;
+  if (!actionsContainer || !themeToggleBtn) return;
+
+  let stack = document.getElementById('build-theme-stack');
+  if (!stack) {
+    stack = document.createElement('div');
+    stack.id = 'build-theme-stack';
+    stack.className = 'build-theme-stack';
+  }
+
+  let badge = document.getElementById('build-badge');
   if (!badge) {
     badge = document.createElement('div');
     badge.id = 'build-badge';
-    badge.className = 'build-badge';
-    document.body.appendChild(badge);
+    badge.className = 'build-badge-inline';
   }
 
   badge.innerHTML = `
     <div class="build-badge__version">${escapeHtml(BUILD_META.version)}</div>
     <div class="build-badge__time">${escapeHtml(BUILD_META.pushedAt)}</div>
   `;
+
+  if (themeToggleBtn.parentElement !== stack) {
+    actionsContainer.insertBefore(stack, themeToggleBtn);
+    stack.appendChild(badge);
+    stack.appendChild(themeToggleBtn);
+  } else if (!stack.contains(badge)) {
+    stack.insertBefore(badge, themeToggleBtn);
+  }
+}
+
+function ensureShareButton() {
+  let shareBtn = document.getElementById('copy-share-btn');
+  if (!shareBtn) {
+    shareBtn = document.createElement('button');
+    shareBtn.id = 'copy-share-btn';
+    shareBtn.type = 'button';
+    shareBtn.className = 'ghost-btn';
+    shareBtn.textContent = 'Copy/share';
+
+    if (clearSearchBtn && clearSearchBtn.parentElement) {
+      clearSearchBtn.insertAdjacentElement('afterend', shareBtn);
+    }
+  }
+
+  if (!shareBtn.dataset.bound) {
+    shareBtn.addEventListener('click', async () => {
+      const originalText = 'Copy/share';
+
+      try {
+        await copyTextToClipboard(window.location.href);
+        shareBtn.textContent = 'Copied!';
+        shareBtn.classList.add('copied');
+      } catch (error) {
+        console.error(error);
+        shareBtn.textContent = 'Copy failed';
+        shareBtn.classList.add('copy-failed');
+      }
+
+      window.setTimeout(() => {
+        shareBtn.textContent = originalText;
+        shareBtn.classList.remove('copied');
+        shareBtn.classList.remove('copy-failed');
+      }, 1800);
+    });
+
+    shareBtn.dataset.bound = 'true';
+  }
 }
 
 function render() {
@@ -859,6 +938,8 @@ function render() {
   }
 
   writeUrlState();
+  ensureBuildMetaPlacement();
+  ensureShareButton();
 }
 
 function expandAllFolders() {
@@ -910,7 +991,8 @@ async function init() {
   computeDerivedStats(root);
   resetExpansion();
   applyThemePreference();
-  ensureBuildBadge();
+  ensureBuildMetaPlacement();
+  ensureShareButton();
   applySelectionFromPendingPath();
 
   render();

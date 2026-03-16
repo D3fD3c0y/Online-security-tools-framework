@@ -83,6 +83,95 @@ function expandAncestors(node) {
   }
 }
 
+function parseDateStrict(dateString) {
+  if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
+  const date = new Date(`${dateString}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getDaysSince(dateString) {
+  const parsed = parseDateStrict(dateString);
+  if (!parsed) return null;
+
+  const now = new Date();
+  const diffMs = now.getTime() - parsed.getTime();
+  return Math.floor(diffMs / 86400000);
+}
+
+function getVerificationMeta(node) {
+  if (!node?.lastVerified) {
+    return {
+      shortLabel: 'Unverified',
+      fullLabel: 'Verification status: unverified',
+      className: 'badge verify-unknown',
+      title: 'No verification date recorded'
+    };
+  }
+
+  const days = getDaysSince(node.lastVerified);
+  if (days === null) {
+    return {
+      shortLabel: 'Unverified',
+      fullLabel: 'Verification status: unverified',
+      className: 'badge verify-unknown',
+      title: 'Invalid verification date'
+    };
+  }
+
+  if (days <= 60) {
+    return {
+      shortLabel: 'Fresh',
+      fullLabel: `Verification status: fresh (${days} day${days === 1 ? '' : 's'} ago)`,
+      className: 'badge verify-fresh',
+      title: `Verified ${days} day${days === 1 ? '' : 's'} ago`
+    };
+  }
+
+  if (days <= 180) {
+    return {
+      shortLabel: 'Aging',
+      fullLabel: `Verification status: aging (${days} days ago)`,
+      className: 'badge verify-aging',
+      title: `Verified ${days} days ago`
+    };
+  }
+
+  return {
+    shortLabel: 'Stale',
+    fullLabel: `Verification status: stale (${days} days ago)`,
+    className: 'badge verify-stale',
+    title: `Verified ${days} days ago`
+  };
+}
+
+function computeDerivedStats(node) {
+  if (!node.isFolder) {
+    node.resourceCount = 1;
+    node.categoryCount = 0;
+    return {
+      resourceCount: 1,
+      categoryCount: 0
+    };
+  }
+
+  let resourceCount = 0;
+  let categoryCount = 0;
+
+  node.children.forEach(child => {
+    const childStats = computeDerivedStats(child);
+    resourceCount += childStats.resourceCount;
+    categoryCount += child.isFolder ? 1 + childStats.categoryCount : childStats.categoryCount;
+  });
+
+  node.resourceCount = resourceCount;
+  node.categoryCount = categoryCount;
+
+  return {
+    resourceCount,
+    categoryCount
+  };
+}
+
 function enrichTree(node, parent = null, depth = 0) {
   node.id = `node-${idCounter++}`;
   node.parent = parent;
@@ -112,7 +201,7 @@ function enrichTree(node, parent = null, depth = 0) {
 function evaluateMatches(node, query) {
   const selfMatches = !query || node.searchText.includes(query);
 
-  // IMPORTANT: evaluate every child before deciding visibility.
+  // Evaluate every child first so visibility is computed correctly for all branches.
   const childResults = node.children.map(child => evaluateMatches(child, query));
   const childMatches = childResults.some(Boolean);
 
@@ -153,26 +242,79 @@ function countVisibleLinks(node) {
   return node.children.reduce((sum, child) => sum + countVisibleLinks(child), 0);
 }
 
+function countVisibleCategories(node) {
+  if (!node.visible || !node.isFolder) return 0;
+  return (node !== root ? 1 : 0) + node.children.reduce((sum, child) => sum + countVisibleCategories(child), 0);
+}
+
 function renderStats() {
   const categoryCount = allNodes.filter(n => n.isFolder && n !== root).length;
   const linkCount = allNodes.filter(n => !n.isFolder).length;
   const visibleCount = root ? countVisibleLinks(root) : 0;
   const accountCount = allNodes.filter(n => !n.isFolder && n.requiresAccount).length;
+  const visibleCategoryCount = root ? countVisibleCategories(root) : 0;
 
   statCategories.textContent = String(categoryCount);
   statLinks.textContent = String(linkCount);
   statVisible.textContent = String(visibleCount);
   statAccount.textContent = String(accountCount);
 
-  treeStatus.textContent = currentQuery
-    ? `Filtered by “${currentQuery}”`
-    : (showNoAccountOnly ? 'Filtered: no-account only' : 'Showing all resources');
+  const statusParts = [];
+  statusParts.push(`Showing ${visibleCount} resource${visibleCount === 1 ? '' : 's'}`);
+  statusParts.push(`${visibleCategoryCount} categor${visibleCategoryCount === 1 ? 'y' : 'ies'} visible`);
+
+  if (currentQuery) {
+    statusParts.push(`query: “${currentQuery}”`);
+  }
+
+  if (showNoAccountOnly) {
+    statusParts.push('filter: no-account only');
+  }
+
+  treeStatus.textContent = statusParts.join(' • ');
+}
+
+function renderLegend() {
+  return `
+    <div class="legend-card">
+      <h4 class="legend-title">Legend</h4>
+      <div class="legend-grid">
+        <div class="legend-item">
+          <span class="badge category-meta">12 resources</span>
+          <span>Category contains this many resources.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge account">Account required</span>
+          <span>Sign-in is needed for part or all of the service.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge verify-fresh">Fresh</span>
+          <span>Verified recently.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge verify-aging">Aging</span>
+          <span>Verified, but should be reviewed soon.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge verify-stale">Stale</span>
+          <span>Verification is old and should be refreshed.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge verify-unknown">Unverified</span>
+          <span>No verification date has been recorded yet.</span>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderDetails(node) {
   if (!node) {
     detailsContainer.className = 'details-empty';
-    detailsContainer.innerHTML = '<p>Select a category or resource to inspect its metadata here.</p>';
+    detailsContainer.innerHTML = `
+      <p>Select a category or resource to inspect its metadata here.</p>
+      ${renderLegend()}
+    `;
     return;
   }
 
@@ -184,12 +326,26 @@ function renderDetails(node) {
     ? '<span class="badge account">Account required</span>'
     : '<span class="badge">No account required</span>';
 
-  const verifiedBadge = node.lastVerified
+  const verificationMeta = !node.isFolder ? getVerificationMeta(node) : null;
+
+  const verificationBadge = verificationMeta
+    ? `<span class="${verificationMeta.className}" title="${escapeHtml(verificationMeta.title)}">${escapeHtml(verificationMeta.shortLabel)}</span>`
+    : '';
+
+  const verifiedDateBadge = node.lastVerified
     ? `<span class="badge">Last verified: ${escapeHtml(node.lastVerified)}</span>`
     : '';
 
   const parentBadge = node.parent && node.parent !== root
     ? `<span class="badge">Parent: ${escapeHtml(node.parent.displayName || node.parent.name || '')}</span>`
+    : '';
+
+  const categorySummaryBadge = node.isFolder
+    ? `<span class="badge category-meta">${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'}</span>`
+    : '';
+
+  const nestedCategoryBadge = node.isFolder && node !== root
+    ? `<span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>`
     : '';
 
   const openAction = !node.isFolder && node.url
@@ -200,6 +356,19 @@ function renderDetails(node) {
     ? `<a class="secondary-btn" href="${escapeHtml(node.url)}" target="_blank" rel="noreferrer noopener">Open in new tab</a>`
     : '';
 
+  const pathBadge = `<span class="badge path-badge">${escapeHtml(getNodePath(node))}</span>`;
+
+  const extraPanel = node === root || node.isFolder
+    ? renderLegend()
+    : `
+      <div class="legend-card">
+        <h4 class="legend-title">Verification details</h4>
+        <p class="legend-copy">
+          ${verificationMeta ? escapeHtml(verificationMeta.fullLabel) : 'This item has no verification metadata.'}
+        </p>
+      </div>
+    `;
+
   detailsContainer.className = 'details-card';
   detailsContainer.innerHTML = `
     <h3 class="details-title">${escapeHtml(node.displayName || node.name || '')}</h3>
@@ -207,14 +376,29 @@ function renderDetails(node) {
     <div class="meta-list">
       ${typeBadge}
       ${accountBadge}
-      ${verifiedBadge}
+      ${verificationBadge}
+      ${verifiedDateBadge}
+      ${categorySummaryBadge}
+      ${nestedCategoryBadge}
       ${parentBadge}
+      ${pathBadge}
     </div>
     <div class="details-actions">
       ${openAction}
       ${secondaryAction}
     </div>
+    ${extraPanel}
   `;
+}
+
+function appendBadge(row, className, text, title = '') {
+  const badge = document.createElement('span');
+  badge.className = className;
+  badge.textContent = text;
+  if (title) {
+    badge.title = title;
+  }
+  row.appendChild(badge);
 }
 
 function makeTreeNode(node) {
@@ -297,18 +481,24 @@ function makeTreeNode(node) {
 
   row.appendChild(label);
 
-  if (node.requiresAccount) {
-    const badge = document.createElement('span');
-    badge.className = 'badge account';
-    badge.textContent = 'Account';
-    row.appendChild(badge);
-  }
+  if (node.isFolder) {
+    appendBadge(
+      row,
+      'badge category-meta',
+      `${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'}`,
+      `${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'} inside this category`
+    );
+  } else {
+    if (node.requiresAccount) {
+      appendBadge(row, 'badge account', 'Account', 'Account required');
+    }
 
-  if (node.lastVerified) {
-    const badge = document.createElement('span');
-    badge.className = 'badge';
-    badge.textContent = node.lastVerified;
-    row.appendChild(badge);
+    const verificationMeta = getVerificationMeta(node);
+    appendBadge(row, verificationMeta.className, verificationMeta.shortLabel, verificationMeta.title);
+
+    if (node.lastVerified) {
+      appendBadge(row, 'badge', node.lastVerified, `Last verified on ${node.lastVerified}`);
+    }
   }
 
   li.appendChild(row);
@@ -448,7 +638,6 @@ async function init() {
 
   const data = await response.json();
 
-  // Reset state before rebuilding
   allNodes.length = 0;
   idCounter = 0;
   selectedId = null;
@@ -456,6 +645,7 @@ async function init() {
   readUrlState();
 
   root = enrichTree(data);
+  computeDerivedStats(root);
   resetExpansion();
   applyThemePreference();
   applySelectionFromPendingPath();
@@ -551,4 +741,3 @@ document.addEventListener('keydown', (event) => {
 init().catch(error => {
   treeContainer.innerHTML = `<div class="details-card"><h3>Could not load data</h3><p>${escapeHtml(String(error))}</p></div>`;
 });
-``

@@ -23,7 +23,7 @@ let showNoAccountOnly = false;
 const allNodes = [];
 
 function escapeHtml(value = '') {
-  return value
+  return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
@@ -88,6 +88,7 @@ function expandMatches(node) {
 }
 
 function resetExpansion() {
+  if (!root) return;
   expanded = new Set([root.id]);
 }
 
@@ -100,7 +101,7 @@ function countVisibleLinks(node) {
 function renderStats() {
   const categoryCount = allNodes.filter(n => n.isFolder && n !== root).length;
   const linkCount = allNodes.filter(n => !n.isFolder).length;
-  const visibleCount = countVisibleLinks(root);
+  const visibleCount = root ? countVisibleLinks(root) : 0;
   const accountCount = allNodes.filter(n => !n.isFolder && n.requiresAccount).length;
 
   statCategories.textContent = String(categoryCount);
@@ -174,8 +175,11 @@ function makeTreeNode(node) {
     toggle.setAttribute('aria-label', expanded.has(node.id) ? 'Collapse category' : 'Expand category');
     toggle.textContent = expanded.has(node.id) ? '−' : '+';
     toggle.addEventListener('click', () => {
-      if (expanded.has(node.id)) expanded.delete(node.id);
-      else expanded.add(node.id);
+      if (expanded.has(node.id)) {
+        expanded.delete(node.id);
+      } else {
+        expanded.add(node.id);
+      }
       render();
     });
     row.appendChild(toggle);
@@ -202,7 +206,9 @@ function makeTreeNode(node) {
   }
 
   label.addEventListener('click', (event) => {
-    if (!node.url || node.isFolder) event.preventDefault();
+    if (!node.url || node.isFolder) {
+      event.preventDefault();
+    }
     selectedId = node.id;
     if (node.isFolder) expanded.add(node.id);
     renderDetails(node);
@@ -240,6 +246,8 @@ function makeTreeNode(node) {
 }
 
 function render() {
+  if (!root) return;
+
   evaluateMatches(root, currentQuery);
 
   if (currentQuery || showNoAccountOnly) {
@@ -261,7 +269,9 @@ function render() {
 }
 
 function expandAllFolders() {
-  allNodes.filter(node => node.isFolder).forEach(node => expanded.add(node.id));
+  allNodes
+    .filter(node => node.isFolder)
+    .forEach(node => expanded.add(node.id));
   render();
 }
 
@@ -280,7 +290,16 @@ function applyThemePreference() {
 
 async function init() {
   const response = await fetch('./data/tree.json');
+
+  if (!response.ok) {
+    throw new Error(`Failed to load tree.json (${response.status} ${response.statusText})`);
+  }
+
   const data = await response.json();
+
+  // Important reset before rebuilding tree
+  allNodes.length = 0;
+  idCounter = 0;
 
   root = enrichTree(data);
   resetExpansion();
@@ -324,4 +343,4 @@ themeToggleBtn.addEventListener('click', () => {
 init().catch(error => {
   treeContainer.innerHTML = `<div class="details-card"><h3>Could not load data</h3><p>${escapeHtml(String(error))}</p></div>`;
 });
-
+``

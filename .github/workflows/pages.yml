@@ -1,13 +1,19 @@
-name: Deploy GitHub Pages
+
+name: Sync Source And Deploy Pages
 
 on:
+  repository_dispatch:
+    types:
+      - source-updated
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -16,12 +22,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  sync-build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout framework repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync tree.json from source repository
+        run: |
+          python scripts/sync_tree.py
+
+      - name: Commit updated tree.json if changed
+        shell: bash
+        run: |
+          if git diff --quiet -- data/tree.json; then
+            echo "No data/tree.json changes to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/tree.json
+            git commit -m "chore: sync tree.json from Free-online-security-services"
+            git push
+          fi
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -53,15 +83,6 @@ jobs:
         with:
           path: .
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

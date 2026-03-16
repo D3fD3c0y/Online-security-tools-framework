@@ -1,9 +1,9 @@
-
 name: Deploy GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -12,29 +12,56 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Generate build metadata
+        shell: bash
+        run: |
+          mkdir -p data
+
+          SHORT_SHA="${GITHUB_SHA::7}"
+          BUILD_VERSION="v${GITHUB_RUN_NUMBER}-${SHORT_SHA}"
+          PUSHED_AT="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+
+          cat > data/build-meta.json <<EOF
+          {
+            "version": "${BUILD_VERSION}",
+            "pushedAt": "${PUSHED_AT}",
+            "commit": "${GITHUB_SHA}",
+            "shortSha": "${SHORT_SHA}",
+            "runNumber": "${GITHUB_RUN_NUMBER}"
+          }
+          EOF
+
+          echo "Generated data/build-meta.json"
+          cat data/build-meta.json
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-

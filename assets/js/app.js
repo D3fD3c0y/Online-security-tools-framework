@@ -13,10 +13,15 @@ const statLinks = document.getElementById('stat-links');
 const statVisible = document.getElementById('stat-visible');
 const statAccount = document.getElementById('stat-account');
 
-const BUILD_META = {
-  version: 'v0.7.0',
-  pushedAt: '2026-03-16 08:44 GMT-04:00'
+const DEFAULT_BUILD_META = {
+  version: 'dev',
+  pushedAt: 'local / unknown',
+  commit: '',
+  shortSha: '',
+  runNumber: ''
 };
+
+let buildMeta = { ...DEFAULT_BUILD_META };
 
 let root = null;
 let idCounter = 0;
@@ -839,6 +844,25 @@ async function copyTextToClipboard(text) {
   return true;
 }
 
+async function loadBuildMeta() {
+  try {
+    const response = await fetch('./data/build-meta.json', { cache: 'no-store' });
+    if (!response.ok) {
+      buildMeta = { ...DEFAULT_BUILD_META };
+      return;
+    }
+
+    const json = await response.json();
+    buildMeta = {
+      ...DEFAULT_BUILD_META,
+      ...json
+    };
+  } catch (error) {
+    console.warn('Could not load build metadata:', error);
+    buildMeta = { ...DEFAULT_BUILD_META };
+  }
+}
+
 function ensureBuildMetaPlacement() {
   const actionsContainer = themeToggleBtn?.parentElement;
   if (!actionsContainer || !themeToggleBtn) return;
@@ -857,9 +881,14 @@ function ensureBuildMetaPlacement() {
     badge.className = 'build-badge-inline';
   }
 
+  const titleParts = [];
+  if (buildMeta.commit) titleParts.push(`Commit: ${buildMeta.commit}`);
+  if (buildMeta.runNumber) titleParts.push(`Run: ${buildMeta.runNumber}`);
+  badge.title = titleParts.join(' • ');
+
   badge.innerHTML = `
-    <div class="build-badge__version">${escapeHtml(BUILD_META.version)}</div>
-    <div class="build-badge__time">${escapeHtml(BUILD_META.pushedAt)}</div>
+    <div class="build-badge__version">${escapeHtml(buildMeta.version)}</div>
+    <div class="build-badge__time">${escapeHtml(buildMeta.pushedAt)}</div>
   `;
 
   if (themeToggleBtn.parentElement !== stack) {
@@ -991,6 +1020,7 @@ async function init() {
   computeDerivedStats(root);
   resetExpansion();
   applyThemePreference();
+  await loadBuildMeta();
   ensureBuildMetaPlacement();
   ensureShareButton();
   applySelectionFromPendingPath();

@@ -22,6 +22,12 @@ let currentQuery = '';
 let showNoAccountOnly = false;
 const allNodes = [];
 
+function decodeHtmlEntities(value = '') {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = String(value);
+  return textarea.value;
+}
+
 function escapeHtml(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -36,7 +42,7 @@ function regexEscape(value = '') {
 }
 
 function highlight(text, query) {
-  const safeText = escapeHtml(text || '');
+  const safeText = escapeHtml(decodeHtmlEntities(text || ''));
   if (!query) return safeText;
   const pattern = new RegExp(`(${regexEscape(query)})`, 'ig');
   return safeText.replace(pattern, '<mark>$1</mark>');
@@ -46,10 +52,19 @@ function enrichTree(node, parent = null, depth = 0) {
   node.id = `node-${idCounter++}`;
   node.parent = parent;
   node.depth = depth;
-  node.isFolder = Array.isArray(node.children) && node.children.length > 0;
+  node.children = Array.isArray(node.children) ? node.children : [];
+  node.isFolder = node.children.length > 0;
   node.requiresAccount = Boolean(node.requiresAccount);
-  node.children = node.children || [];
-  node.searchText = [node.name, node.description, node.url, node.lastVerified]
+
+  node.displayName = decodeHtmlEntities(node.name || '');
+  node.displayDescription = decodeHtmlEntities(node.description || '');
+
+  node.searchText = [
+    node.displayName,
+    node.displayDescription,
+    node.url,
+    node.lastVerified
+  ]
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
@@ -61,16 +76,22 @@ function enrichTree(node, parent = null, depth = 0) {
 
 function evaluateMatches(node, query) {
   const selfMatches = !query || node.searchText.includes(query);
-  const childMatches = node.children.some(child => evaluateMatches(child, query));
+
+  // IMPORTANT FIX:
+  // Evaluate ALL children first, then determine whether any matched.
+  const childResults = node.children.map(child => evaluateMatches(child, query));
+  const childMatches = childResults.some(Boolean);
+
   const accountPass = !showNoAccountOnly || !node.requiresAccount;
 
   node.selfMatches = selfMatches;
   node.queryMatches = selfMatches || childMatches;
-  node.visible = accountPass && (node.isFolder ? childMatches || selfMatches : selfMatches);
 
   if (node.isFolder) {
     const anyVisibleChild = node.children.some(child => child.visible);
     node.visible = accountPass && (selfMatches || anyVisibleChild || !query);
+  } else {
+    node.visible = accountPass && selfMatches;
   }
 
   return node.queryMatches;
@@ -134,17 +155,21 @@ function renderDetails(node) {
     : '';
 
   const parentBadge = node.parent && node.parent !== root
-    ? `<span class="badge">Parent: ${escapeHtml(node.parent.name)}</span>`
+    ? `<span class="badge">Parent: ${escapeHtml(node.parent.displayName || node.parent.name || '')}</span>`
     : '';
 
   const openAction = !node.isFolder && node.url
     ? `<a class="primary-link" href="${escapeHtml(node.url)}" target="_blank" rel="noreferrer noopener">Open resource</a>`
     : '';
 
+  const secondaryAction = node.url
+    ? `<a class="secondary-btn" href="${escapeHtml(node.url)}" target="_blank" rel="noreferrer noopener">Open in new tab</a>`
+    : '';
+
   detailsContainer.className = 'details-card';
   detailsContainer.innerHTML = `
-    <h3 class="details-title">${escapeHtml(node.name)}</h3>
-    <p class="details-description">${escapeHtml(node.description || (node.isFolder ? 'Category folder' : 'No description provided.'))}</p>
+    <h3 class="details-title">${escapeHtml(node.displayName || node.name || '')}</h3>
+    <p class="details-description">${escapeHtml(node.displayDescription || (node.isFolder ? 'Category folder' : 'No description provided.'))}</p>
     <div class="meta-list">
       ${typeBadge}
       ${accountBadge}
@@ -153,7 +178,7 @@ function renderDetails(node) {
     </div>
     <div class="details-actions">
       ${openAction}
-      ${node.url ? `<a class="secondary-btn" href="${escapeHtml(node.url)}" target="_blank" rel="noreferrer noopener">Open in new tab</a>` : ''}
+      ${secondaryAction}
     </div>
   `;
 }
@@ -162,11 +187,17 @@ function makeTreeNode(node) {
   const li = document.createElement('li');
   li.className = 'tree-node';
   li.dataset.id = node.id;
-  if (!node.visible) li.classList.add('hidden');
+
+  if (!node.visible) {
+    li.classList.add('hidden');
+  }
 
   const row = document.createElement('div');
   row.className = 'tree-row';
-  if (selectedId === node.id) row.classList.add('selected');
+
+  if (selectedId === node.id) {
+    row.classList.add('selected');
+  }
 
   if (node.isFolder) {
     const toggle = document.createElement('button');
@@ -174,6 +205,7 @@ function makeTreeNode(node) {
     toggle.type = 'button';
     toggle.setAttribute('aria-label', expanded.has(node.id) ? 'Collapse category' : 'Expand category');
     toggle.textContent = expanded.has(node.id) ? '−' : '+';
+
     toggle.addEventListener('click', () => {
       if (expanded.has(node.id)) {
         expanded.delete(node.id);
@@ -182,6 +214,7 @@ function makeTreeNode(node) {
       }
       render();
     });
+
     row.appendChild(toggle);
   } else {
     const spacer = document.createElement('span');
@@ -193,9 +226,12 @@ function makeTreeNode(node) {
   icon.className = `node-icon ${node.isFolder ? 'folder' : ''}`;
   row.appendChild(icon);
 
-  const label = node.url && !node.isFolder ? document.createElement('a') : document.createElement('button');
+  const label = node.url && !node.isFolder
+    ? document.createElement('a')
+    : document.createElement('button');
+
   label.className = node.url && !node.isFolder ? 'node-link' : 'node-label';
-  label.innerHTML = highlight(node.name, currentQuery);
+  label.innerHTML = highlight(node.displayName || node.name || '', currentQuery);
 
   if (node.url && !node.isFolder) {
     label.href = node.url;
@@ -209,8 +245,13 @@ function makeTreeNode(node) {
     if (!node.url || node.isFolder) {
       event.preventDefault();
     }
+
     selectedId = node.id;
-    if (node.isFolder) expanded.add(node.id);
+
+    if (node.isFolder) {
+      expanded.add(node.id);
+    }
+
     renderDetails(node);
     render();
   });
@@ -236,9 +277,15 @@ function makeTreeNode(node) {
   if (node.isFolder) {
     const childList = document.createElement('ul');
     childList.className = 'children';
-    if (!expanded.has(node.id)) childList.classList.add('collapsed');
 
-    node.children.forEach(child => childList.appendChild(makeTreeNode(child)));
+    if (!expanded.has(node.id)) {
+      childList.classList.add('collapsed');
+    }
+
+    node.children.forEach(child => {
+      childList.appendChild(makeTreeNode(child));
+    });
+
     li.appendChild(childList);
   }
 
@@ -257,6 +304,7 @@ function render() {
   const ul = document.createElement('ul');
   ul.className = 'tree-root';
   ul.appendChild(makeTreeNode(root));
+
   treeContainer.replaceChildren(ul);
 
   renderStats();
@@ -272,6 +320,7 @@ function expandAllFolders() {
   allNodes
     .filter(node => node.isFolder)
     .forEach(node => expanded.add(node.id));
+
   render();
 }
 
@@ -297,9 +346,10 @@ async function init() {
 
   const data = await response.json();
 
-  // Important reset before rebuilding tree
+  // Reset state before rebuilding
   allNodes.length = 0;
   idCounter = 0;
+  selectedId = null;
 
   root = enrichTree(data);
   resetExpansion();
@@ -312,13 +362,21 @@ async function init() {
 
 searchInput.addEventListener('input', () => {
   currentQuery = searchInput.value.trim().toLowerCase();
-  if (!currentQuery && !showNoAccountOnly) resetExpansion();
+
+  if (!currentQuery && !showNoAccountOnly) {
+    resetExpansion();
+  }
+
   render();
 });
 
 accountFilter.addEventListener('change', () => {
   showNoAccountOnly = accountFilter.checked;
-  if (!currentQuery && !showNoAccountOnly) resetExpansion();
+
+  if (!currentQuery && !showNoAccountOnly) {
+    resetExpansion();
+  }
+
   render();
 });
 
@@ -327,6 +385,7 @@ clearSearchBtn.addEventListener('click', () => {
   accountFilter.checked = false;
   currentQuery = '';
   showNoAccountOnly = false;
+
   resetExpansion();
   render();
 });
@@ -343,4 +402,3 @@ themeToggleBtn.addEventListener('click', () => {
 init().catch(error => {
   treeContainer.innerHTML = `<div class="details-card"><h3>Could not load data</h3><p>${escapeHtml(String(error))}</p></div>`;
 });
-``

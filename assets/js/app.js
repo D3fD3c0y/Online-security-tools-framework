@@ -13,6 +13,11 @@ const statLinks = document.getElementById('stat-links');
 const statVisible = document.getElementById('stat-visible');
 const statAccount = document.getElementById('stat-account');
 
+const BUILD_META = {
+  version: 'v0.6.0',
+  pushedAt: '2026-03-16 08:44 GMT-04:00'
+};
+
 let root = null;
 let idCounter = 0;
 let expanded = new Set();
@@ -292,13 +297,39 @@ function evaluateMatches(node, query) {
   if (!query) {
     node.matchScore = 0;
   } else if (node.isFolder) {
-    // A folder with matching descendants should rise, but direct folder matches still matter.
     node.matchScore = Math.max(node.selfMatchScore, bestChildScore > 0 ? bestChildScore - 1 : 0);
   } else {
     node.matchScore = node.visible ? node.selfMatchScore : 0;
   }
 
   return node.queryMatches;
+}
+
+function compareSearchRank(a, b, preferFolders = false) {
+  if (a.visible !== b.visible) {
+    return a.visible ? -1 : 1;
+  }
+
+  if ((b.matchScore || 0) !== (a.matchScore || 0)) {
+    return (b.matchScore || 0) - (a.matchScore || 0);
+  }
+
+  if (a.selfMatches !== b.selfMatches) {
+    return a.selfMatches ? -1 : 1;
+  }
+
+  if (a.isFolder !== b.isFolder) {
+    if (preferFolders) {
+      return a.isFolder ? -1 : 1;
+    }
+    return a.isFolder ? 1 : -1;
+  }
+
+  if ((b.resourceCount || 0) !== (a.resourceCount || 0)) {
+    return (b.resourceCount || 0) - (a.resourceCount || 0);
+  }
+
+  return (a.displayName || '').localeCompare(b.displayName || '', undefined, { sensitivity: 'base' });
 }
 
 function expandMatches(node) {
@@ -326,6 +357,50 @@ function countVisibleLinks(node) {
 function countVisibleCategories(node) {
   if (!node.visible || !node.isFolder) return 0;
   return (node !== root ? 1 : 0) + node.children.reduce((sum, child) => sum + countVisibleCategories(child), 0);
+}
+
+function getSortedChildren(node) {
+  const children = [...node.children];
+
+  if (!currentQuery) {
+    return children;
+  }
+
+  children.sort((a, b) => compareSearchRank(a, b, true));
+  return children;
+}
+
+function getTopMatches(limit = 6) {
+  if (!currentQuery) return [];
+
+  return allNodes
+    .filter(node => node.visible && node.matchScore > 0)
+    .sort((a, b) => compareSearchRank(a, b, false))
+    .slice(0, limit);
+}
+
+function getMatchingCategories(limit = 6) {
+  if (!currentQuery) return [];
+
+  return allNodes
+    .filter(node => node.isFolder && node !== root && node.visible)
+    .map(node => ({
+      node,
+      visibleResourceCount: countVisibleLinks(node)
+    }))
+    .filter(item => item.visibleResourceCount > 0)
+    .sort((a, b) => {
+      if (b.visibleResourceCount !== a.visibleResourceCount) {
+        return b.visibleResourceCount - a.visibleResourceCount;
+      }
+
+      if ((b.node.matchScore || 0) !== (a.node.matchScore || 0)) {
+        return (b.node.matchScore || 0) - (a.node.matchScore || 0);
+      }
+
+      return (a.node.displayName || '').localeCompare(b.node.displayName || '', undefined, { sensitivity: 'base' });
+    })
+    .slice(0, limit);
 }
 
 function renderStats() {
@@ -389,13 +464,75 @@ function renderLegend() {
   `;
 }
 
+function renderSearchSummaryPanel() {
+  if (!currentQuery) return '';
+
+  const visibleResourceCount = root ? countVisibleLinks(root) : 0;
+  const visibleCategoryCount = root ? countVisibleCategories(root) : 0;
+  const topMatches = getTopMatches(6);
+  const matchingCategories = getMatchingCategories(6);
+
+  const topMatchesHtml = topMatches.length
+    ? topMatches.map(node => `
+        <button type="button" class="summary-link-btn" data-jump-node-id="${escapeHtml(node.id)}">
+          <span class="summary-link-title">${escapeHtml(node.displayName)}</span>
+          <span class="summary-link-path">${escapeHtml(getNodePath(node))}</span>
+        </button>
+      `).join('')
+    : '<p class="legend-copy">No direct matches were found for the current search and filter combination.</p>';
+
+  const matchingCategoriesHtml = matchingCategories.length
+    ? matchingCategories.map(item => `
+        <button type="button" class="summary-category-btn" data-jump-node-id="${escapeHtml(item.node.id)}">
+          <span class="summary-category-name">${escapeHtml(item.node.displayName)}</span>
+          <span class="summary-category-count">${item.visibleResourceCount} match${item.visibleResourceCount === 1 ? '' : 'es'}</span>
+        </button>
+      `).join('')
+    : '<p class="legend-copy">No matching categories found.</p>';
+
+  return `
+    <section class="search-summary-panel">
+      <div class="summary-header">
+        <div>
+          <h4 class="summary-title">Search summary</h4>
+          <p class="summary-subtitle">Results for “${escapeHtml(currentQuery)}”</p>
+        </div>
+        <div class="summary-stats">
+          <span class="badge category-meta">${visibleResourceCount} resource${visibleResourceCount === 1 ? '' : 's'}</span>
+          <span class="badge category-meta">${visibleCategoryCount} categor${visibleCategoryCount === 1 ? 'y' : 'ies'}</span>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h5 class="summary-card-title">Top matches</h5>
+          <div class="summary-link-list">
+            ${topMatchesHtml}
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h5 class="summary-card-title">Matching categories</h5>
+          <div class="summary-category-list">
+            ${matchingCategoriesHtml}
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function renderDetails(node) {
+  const summaryPanel = renderSearchSummaryPanel();
+
   if (!node) {
     detailsContainer.className = 'details-empty';
     detailsContainer.innerHTML = `
+      ${summaryPanel}
       <p>Select a category or resource to inspect its metadata here.</p>
       ${renderLegend()}
     `;
+    wireSummaryActions();
     return;
   }
 
@@ -452,6 +589,7 @@ function renderDetails(node) {
 
   detailsContainer.className = 'details-card';
   detailsContainer.innerHTML = `
+    ${summaryPanel}
     <h3 class="details-title">${escapeHtml(node.displayName || node.name || '')}</h3>
     <p class="details-description">${escapeHtml(node.displayDescription || (node.isFolder ? 'Category folder' : 'No description provided.'))}</p>
     <div class="meta-list">
@@ -470,6 +608,29 @@ function renderDetails(node) {
     </div>
     ${extraPanel}
   `;
+
+  wireSummaryActions();
+}
+
+function wireSummaryActions() {
+  detailsContainer.querySelectorAll('[data-jump-node-id]').forEach(button => {
+    button.addEventListener('click', () => {
+      const nodeId = button.getAttribute('data-jump-node-id');
+      const node = allNodes.find(item => item.id === nodeId);
+
+      if (!node) return;
+
+      selectedId = node.id;
+      expandAncestors(node);
+
+      if (node.isFolder) {
+        expanded.add(node.id);
+      }
+
+      renderDetails(node);
+      render();
+    });
+  });
 }
 
 function appendBadge(row, className, text, title = '') {
@@ -480,40 +641,6 @@ function appendBadge(row, className, text, title = '') {
     badge.title = title;
   }
   row.appendChild(badge);
-}
-
-function getSortedChildren(node) {
-  const children = [...node.children];
-
-  if (!currentQuery) {
-    return children;
-  }
-
-  children.sort((a, b) => {
-    if (a.visible !== b.visible) {
-      return a.visible ? -1 : 1;
-    }
-
-    if ((b.matchScore || 0) !== (a.matchScore || 0)) {
-      return (b.matchScore || 0) - (a.matchScore || 0);
-    }
-
-    if (a.selfMatches !== b.selfMatches) {
-      return a.selfMatches ? -1 : 1;
-    }
-
-    if (a.isFolder !== b.isFolder) {
-      return a.isFolder ? -1 : 1;
-    }
-
-    if ((b.resourceCount || 0) !== (a.resourceCount || 0)) {
-      return (b.resourceCount || 0) - (a.resourceCount || 0);
-    }
-
-    return (a.displayName || '').localeCompare(b.displayName || '', undefined, { sensitivity: 'base' });
-  });
-
-  return children;
 }
 
 function makeTreeNode(node) {
@@ -688,6 +815,22 @@ function applySelectionFromPendingPath() {
   renderDetails(root);
 }
 
+function ensureBuildBadge() {
+  let badge = document.getElementById('build-badge');
+
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'build-badge';
+    badge.className = 'build-badge';
+    document.body.appendChild(badge);
+  }
+
+  badge.innerHTML = `
+    <div class="build-badge__version">${escapeHtml(BUILD_META.version)}</div>
+    <div class="build-badge__time">${escapeHtml(BUILD_META.pushedAt)}</div>
+  `;
+}
+
 function render() {
   if (!root) return;
 
@@ -706,9 +849,13 @@ function render() {
   renderStats();
 
   const selectedNode = allNodes.find(node => node.id === selectedId);
-  if (selectedNode && !selectedNode.visible) {
+  if (selectedNode && selectedNode.visible) {
+    renderDetails(selectedNode);
+  } else if (selectedId && selectedNode && !selectedNode.visible) {
     selectedId = null;
     renderDetails(null);
+  } else if (!selectedId) {
+    renderDetails(currentQuery ? null : root);
   }
 
   writeUrlState();
@@ -763,6 +910,7 @@ async function init() {
   computeDerivedStats(root);
   resetExpansion();
   applyThemePreference();
+  ensureBuildBadge();
   applySelectionFromPendingPath();
 
   render();

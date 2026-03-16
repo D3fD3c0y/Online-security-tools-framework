@@ -1,1 +1,96 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Interactive, GitHub-hosted defensive security services tree" />
+  <title>Security Services Tree</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">GitHub Pages • Static HTML/CSS/JS</p>
+        <h1>Security Services Tree</h1>
+        <p class="hero-text">
+          Interactive defensive-only resource explorer with collapsible tree navigation,
+          search, filters, and a details pane.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button id="expand-all" class="secondary-btn">Expand all</button>
+        <button id="collapse-all" class="secondary-btn">Collapse all</button>
+        <button id="theme-toggle" class="secondary-btn" aria-pressed="false">Toggle theme</button>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="Controls">
+      <label class="search-wrap" for="search-input">
+        <span class="visually-hidden">Search</span>
+        <input id="search-input" type="search" placeholder="Search tools, descriptions, categories…" autocomplete="off" />
+      </label>
+
+      <label class="checkbox-wrap">
+        <input id="account-filter" type="checkbox" />
+        <span>Only show no-account items</span>
+      </label>
+
+      <button id="clear-search" class="ghost-btn">Clear</button>
+    </section>
+
+    <section class="stats-grid" aria-label="Stats">
+      <article class="stat-card">
+        <span class="stat-label">Categories</span>
+        <strong id="stat-categories">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Resources</span>
+        <strong id="stat-links">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Visible</span>
+        <strong id="stat-visible">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Needs account</span>
+        <strong id="stat-account">0</strong>
+      </article>
+    </section>
+
+    <main class="content-grid">
+      <section class="panel panel-tree" aria-labelledby="tree-title">
+        <div class="panel-header">
+          <h2 id="tree-title">Collapsible tree</h2>
+          <span id="tree-status" class="subtle"></span>
+        </div>
+        <div id="tree-container" class="tree-container" role="tree"></div>
+      </section>
+
+      <aside class="panel panel-details" aria-labelledby="details-title">
+        <div class="panel-header">
+          <h2 id="details-title">Details</h2>
+          <span class="subtle">Select any node</span>
+        </div>
+        <div id="details-container" class="details-empty">
+          <p>Select a category or resource to inspect its metadata here.</p>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Source-inspired dataset:
+        <a href="https://github.com/D3fD3c0y/Free-online-security-services" target="_blank" rel="noreferrer noopener">
+          D3fD3c0y/Free-online-security-services
+        </a>
+      </p>
+      <p>Static site — ideal for GitHub Pages.</p>
+    </footer>
+  </div>
+
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
+

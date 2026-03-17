@@ -55,7 +55,7 @@
           "url": "https://disarmfoundation.github.io/disarm-navigator/",
           "description": "The DISARM Red Framework provides a common language for documenting influence operations. When different organisations describe what they're seeing in the same terms, they can share intelligence, and gain a better understanding of actors' manipulative behaviours.",
           "requiresAccount": false,
-          "lastVerified": "2025-02-20"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre Att&ck Enterprise Matrix",
@@ -63,7 +63,7 @@
           "url": "https://attack.mitre.org/matrices/enterprise/",
           "description": "The tactics and techniques representing the MITRE ATT&CK® Matrix for Enterprise.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "MITRE ATTACK Flow",
@@ -71,7 +71,7 @@
           "url": "https://ctid.mitre.org/projects/attack-flow",
           "description": "With Attack Flow, you will capture the entire attack and communicate what matters",
           "requiresAccount": false,
-          "lastVerified": "2025-08-15"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "MITRE ATTACK Flow Builder",
@@ -79,15 +79,15 @@
           "url": "https://center-for-threat-informed-defense.github.io/attack-flow/ui/",
           "description": "Interactive interface of the MITRE ATTACK Flow",
           "requiresAccount": false,
-          "lastVerified": "2025-08-15"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre Att&ck Navigator",
           "type": "link",
-          "url": "https://mitre-attack.github.io/attack-navigator/enterprise/",
+          "url": "https://mitre-attack.github.io/attack-navigator/",
           "description": "Interactive interface of the MITRE ATT&CK Framework which can be use as graphical reference for understanding/following invetsigation.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre CAPEC",
@@ -95,7 +95,7 @@
           "url": "https://capec.mitre.org/",
           "description": "CAPEC™ provide a comprehensive dictionary of known patterns of attack employed by adversaries to exploit known weaknesses in cyber-enabled capabilities.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre CREF Navigator",
@@ -103,7 +103,7 @@
           "url": "https://crefnavigator.mitre.org/navigator",
           "description": "The CREF Navigator™ was developed as a web based relational tool distilling the complex concepts and relationships from NIST SP 800-160 Volume 2 (Rev 1) into useful cyber resiliency terms, tables, and relationship visualizations enabling architectural and engineering analysis.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre CVE",
@@ -111,7 +111,7 @@
           "url": "https://www.cve.org/",
           "description": "The mission of the CVE® Program is to identify, define, and catalog publicly disclosed cybersecurity vulnerabilities.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre CWE",
@@ -119,7 +119,7 @@
           "url": "https://cwe.mitre.org/",
           "description": "Common Weakness Enumeration (CWE™) is a community-developed list of common software and hardware weaknesses. A “weakness” is a condition in a software, firmware, hardware, or service component that, under certain circumstances, could contribute to the introduction of vulnerabilities.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre DEFEND",
@@ -127,15 +127,15 @@
           "url": "https://d3fend.mitre.org/",
           "description": "A framework in which we encode a countermeasure knowledge base, but more specifically, a knowledge graph.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Mitre EMB3D",
           "type": "link",
-          "url": "https://d3fend.mitre.org/",
+          "url": "https://emb3d.mitre.org/",
           "description": "The EMB3D Threat Model provides a cultivated knowledge base of cyber threats to embedded devices, providing a common understanding of these threats with security mechanisms to mitigate them.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "OSWAP BLADE",
@@ -143,7 +143,7 @@
           "url": "https://www.bladeframework.org/",
           "description": "The OWASP Business Logic Attack Definition (BLADE) Framework, is an open-source knowledge-base created to help cybersecurity professionals identify the phases, tactics and techniques used by adversaries to exploit weaknesses in the business logic of web facing systems (websites and APIs)",
           "requiresAccount": false,
-          "lastVerified": "2025-08-25"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -156,7 +156,7 @@
           "url": "https://github.com/drb-ra/C2IntelFeeds/tree/master/C2_configs",
           "description": "Free and Open Source Threat Intelligence Feeds dedicated to Cobalt Strike C2, Empire C2 and PoshC2.",
           "requiresAccount": false,
-          "lastVerified": "2025-08-14"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Covert Threat Intelligence Feed list",
@@ -164,7 +164,7 @@
           "url": "http://www.covert.io/threat-intelligence",
           "description": "Free and Open Source Threat Intelligence Feeds.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "FireHOL IPList",
@@ -172,23 +172,23 @@
           "url": "http://iplists.firehol.org/",
           "description": "Analyse all available security IP Feeds, mainly related to on-line attacks, on-line service abuse, malwares, botnets, command and control servers and other cybercrime activities.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Threat Feeds",
           "type": "link",
-          "url": "https://threatfeeds.io/\"",
+          "url": "https://threatfeeds.io/",
           "description": "Free and open-source threat intelligence feeds.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Threat-intel.xyz",
           "type": "link",
-          "url": "https://www.threat-intel.xyz/\"",
+          "url": "https://www.threat-intel.xyz/",
           "description": "Free and Open Source Threat Intelligence Feeds.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -200,8 +200,16 @@
           "type": "link",
           "url": "https://app.any.run/",
           "description": "Interactive online sandbox. Also perform sample download from URL.",
-          "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Filescan.io",
+          "type": "link",
+          "url": "https://www.filescan.io/scan",
+          "description": "The free community version of Filescan.io is powered by MetaDefender Aether that operates 10 times faster than traditional sandboxes and uses 90% fewer resources. It uses adaptive threat analysis technology to detect evasive malware and extract relevant Indicators of Compromise (IOCs). Our threat-agnostic scanning supports a wide variety of files and URLs to identify IOCs swiftly and efficiently.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "GateWatcher",
@@ -217,7 +225,7 @@
           "url": "https://www.hybrid-analysis.com",
           "description": "CrowdStrike's public sandbox. Also perform sample download from URL. Free account required to download samples.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "IRIS-H Digital Forensics",
@@ -225,23 +233,15 @@
           "url": "https://iris-h.services/pages/submit",
           "description": "IRIS-H is an online digital forensics tool that performs automated static analysis of files stored in a directory-based or strictly structured formats. The tool produces two types of data views allowing for thorough digital forensics examination. Support Microsoft Office Documents, .lnk and RTF files.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
-        },
-        {
-          "name": "InQuest Labs",
-          "type": "link",
-          "url": "https://labs.inquest.net/",
-          "description": "Capable of recursively decompressing, decoding, deobfuscating, decompiling, deciphering, and more. We aim to automate and scale the reverse engineering skill-set of a typical SOC analyst.",
-          "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Intezer Analyze Community Edition",
           "type": "link",
-          "url": "https://analyze.intezer.com/#/",
+          "url": "https://analyze.intezer.com/",
           "description": "Intezer's malware analysis and classification of malwares using code DNA mapping.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Joe Sandbox Cloud Community Edition",
@@ -249,15 +249,7 @@
           "url": "https://www.joesandbox.com/",
           "description": "Joe Security's sandbox for Windows, Android, MacOS and IOS for suspicious activities. Also perform sample download from URL.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
-        },
-        {
-          "name": "MalwareConfig",
-          "type": "link",
-          "url": "https://malwareconfig.com/",
-          "description": "Extract config information from RATs.",
-          "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Manalyzer",
@@ -265,15 +257,15 @@
           "url": "https://manalyzer.org/",
           "description": "Manalyzer is a free service which performs static analysis on PE executables to detect undesirable behavior.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
-          "name": "OPSWAT Metadefender",
+          "name": "OPSWAT Metadefender Cloud",
           "type": "link",
           "url": "https://metadefender.com/",
           "description": "OPSWAT's deep endpoint forensic analysis for malware using several methods.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Pikker",
@@ -281,7 +273,7 @@
           "url": "https://sandbox.pikker.ee",
           "description": "Free public instance of Cuckoo sandbox",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Polyswarm",
@@ -289,7 +281,7 @@
           "url": "https://polyswarm.network/scan",
           "description": "Crowdsourced Malware Analysis for new and emerging threats.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Quicksand.io",
@@ -297,7 +289,7 @@
           "url": "https://scan.tylabs.com/",
           "description": "Office document malware analysis.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Sandblast",
@@ -305,7 +297,7 @@
           "url": "https://threatpoint.checkpoint.com/ThreatPortal/emulation",
           "description": "Check Point's public version of Threat Emulation.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "SecondWrite",
@@ -313,7 +305,7 @@
           "url": "https://webportal.secondwrite.com/",
           "description": "SecondWrite brings deep learning and forced code-execution to the battle against advanced malware. Our dynamic analysis malware detector uses patented technology to find, execute and characterize hidden code paths that other malware detectors miss.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Talos File Reputation",
@@ -321,7 +313,7 @@
           "url": "https://talosintelligence.com/talos_file_reputation/",
           "description": "The Cisco Talos Intelligence Group maintains a reputation disposition on billions of files. This reputation system is fed into the AMP, FirePower, ClamAV, and Open-Source Snort product lines.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Triage",
@@ -329,7 +321,7 @@
           "url": "https://tria.ge/",
           "description": "Hatching Triage is our state-of-the-art malware analysis sandbox designed for cross-platform support (Windows, Android, Linux, and macOS), high-volume malware analysis capabilities, and malware configuration extraction for dozens of malware families.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Valkyrie Comodo",
@@ -337,7 +329,7 @@
           "url": "https://valkyrie.comodo.com",
           "description": "File verdict system. Different from traditional signature based malware detection techniques Valkyrie conducts several analysis using run-time behavior and hundreds of features from a file and based on analysis results can warn users against malware undetected by classic Anti-Virus products.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "VirusTotal",
@@ -345,7 +337,7 @@
           "url": "https://www.virustotal.com",
           "description": "Google's public platform that compare samples analysis from multiple AV vendors and provide basic Threat Intelligence and metadata related to the samples. Note that the analysis are base on signature detection for most AV vendors.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -353,12 +345,12 @@
       "name": "Network",
       "children": [
         {
-          "name": "PacketTotal",
+          "name": "DynamiteLab COmmunity",
           "type": "link",
-          "url": "https://www.packettotal.com/",
-          "description": "Simple, free, high-quality PCAP analysis.",
+          "url": "https://dynamitelab.com/",
+          "description": "DynamiteLab, formerly known as PacketTotal, is the world’s largest platform for public packet-capture (PCAP) exchange and analysis with over 100,000 publicly shared PCAP samples.",
           "requiresAccount": false,
-          "lastVerified": "2025-02-07"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "UserAgentString",
@@ -366,7 +358,7 @@
           "url": "http://useragentstring.com/",
           "description": "List over 100 user agent string and provide tool to automatically explain the information found in the User agent string.",
           "requiresAccount": false,
-          "lastVerified": "2025-02-07"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -379,7 +371,7 @@
           "url": "https://checkphish.ai/",
           "description": "Free Scanner to detect phishing & fraudulent sites in real-time.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Code Beautify",
@@ -387,15 +379,15 @@
           "url": "https://codebeautify.org/htmlviewer/",
           "description": "HTML viewer.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "DNSTwister",
           "type": "link",
           "url": "https://dnstwister.report/",
           "description": "The anti-phishing domain name search engine.",
-          "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "requiresAccount": true,
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Google G Suite Toolbox",
@@ -403,7 +395,7 @@
           "url": "https://toolbox.googleapps.com/apps/messageheader/",
           "description": "Headers parser.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Is it Phishing",
@@ -411,7 +403,7 @@
           "url": "https://isitphishing.org/",
           "description": "Based on a heuristic technology coupled with machine learning, ISTIPHISHING is efficient against agile and small waves that contain shortened dynamics links.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "MXToolBox",
@@ -419,7 +411,7 @@
           "url": "https://mxtoolbox.com/EmailHeaders.aspx",
           "description": "Headers parser.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Microsoft Email headers Analyzer",
@@ -427,7 +419,7 @@
           "url": "https://testconnectivity.microsoft.com/?tabid=mha",
           "description": "Headers parser.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Phish report",
@@ -435,15 +427,7 @@
           "url": "https://phish.report/analysis/",
           "description": "Automatically analyses phishing sites and identifies the best ways you can report it to speed up the takedown process.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
-        },
-        {
-          "name": "Phishcheck",
-          "type": "link",
-          "url": "https://phishcheck.me/",
-          "description": "Find out what's lurking behind that URL.",
-          "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "PhisHunt",
@@ -451,7 +435,7 @@
           "url": "https://phishunt.io/",
           "description": "Up-to-date feed of active phishing and scam sites, along with details and quick updates to help you understand this threat.",
           "requiresAccount": false,
-          "lastVerified": "2025-09-10"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Phishtank",
@@ -459,7 +443,7 @@
           "url": "https://www.phishtank.com",
           "description": "PhishTank is a collaborative clearing house for data and information about phishing on the Internet.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "UnPHP",
@@ -467,7 +451,7 @@
           "url": "https://www.unphp.net/",
           "description": "Free service for analyzing obfuscated and malicious PHP code.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -478,29 +462,33 @@
           "name": "100 days of Yara",
           "type": "link",
           "url": "https://github.com/RustyNoob-619/100-Days-of-YARA-2026/tree/main/Rules",
-          "description": "TBD",
-          "requiresAccount": false
+          "description": "The 100 Days of YARA Challenge to write YARA rules consistently",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Detection.FYI",
           "type": "link",
           "url": "https://detection.fyi/",
-          "description": "TBD",
-          "requiresAccount": false
+          "description": "A detection pipeline maturity model for monitoring “everything” while ensuring the highest fidelity signals still rise to the top",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Sigma HQ",
           "type": "link",
           "url": "https://github.com/SigmaHQ/sigma",
-          "description": "TBD",
-          "requiresAccount": false
+          "description": "Main Sigma Rule Repository",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Sigma Search Engine",
           "type": "link",
           "url": "https://sigmasearchengine.com/",
-          "description": "TBD",
-          "requiresAccount": false
+          "description": "Search Engine related to Sigma Rule Repository",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -513,7 +501,7 @@
           "url": "https://mwdb.cert.pl/login",
           "description": "",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "CTI Chef",
@@ -521,7 +509,7 @@
           "url": "https://ctichef.com/",
           "description": "A tool used for cyber threat intelligence (CTI) analysis, specifically focused on analyzing and understanding cybersecurity threats. It may be used to collect, analyze, and disseminate intelligence on cyber threats.",
           "requiresAccount": false,
-          "lastVerified": "2025-05-27"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Google News RSS Feature",
@@ -537,7 +525,7 @@
           "url": "https://detonation.group-ib.com/",
           "description": "Group-IB's Malware Detonation Platform does much more than merely identify good and bad files. It reveals how attacks unfold in real time and pinpoints which processes are executed, which files are created or modified, and what network connections are established.",
           "requiresAccount": false,
-          "lastVerified": "2025-12-23"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Hunt.io Malware Families",
@@ -545,7 +533,7 @@
           "url": "https://hunt.io/malware-families",
           "description": "Explore an extensive collection of the most popular malware families, including detailed descriptions, tactics, and insights into their connections with threat actors.",
           "requiresAccount": false,
-          "lastVerified": "2026-02-27"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "IBM X-Force Exchange",
@@ -553,7 +541,7 @@
           "url": "https://exchange.xforce.ibmcloud.com/",
           "description": "Threat Intelligence sharing platform enabling research on security threats, aggregation of intelligence and collaboration with peers.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Intelligence X",
@@ -561,7 +549,7 @@
           "url": "https://intelx.io/",
           "description": "Intelligence X is a search engine and data archive.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "LevelBlue",
@@ -569,7 +557,7 @@
           "url": "https://otx.alienvault.com/",
           "description": "World's first truly Open Threat Intelligence Community",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Malpedia",
@@ -577,7 +565,7 @@
           "url": "https://malpedia.caad.fkie.fraunhofer.de/library",
           "description": "Provide a resource for rapid identification and actionable context when investigating malware.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Maltiverse",
@@ -585,7 +573,7 @@
           "url": "https://www.maltiverse.com/search",
           "description": "Analyzes all the possible dimensions and points of view of known and classified IOC's to compare them with the unknown indicators for matching.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Poc-on-Github by Nomi-Sec",
@@ -593,7 +581,7 @@
           "url": "https://github.com/nomi-sec/PoC-in-GitHub",
           "description": "PoC auto collect from GitHub. ⚠️ Be careful Malware.",
           "requiresAccount": false,
-          "lastVerified": "2026-01-13"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "PulseDive",
@@ -601,7 +589,7 @@
           "url": "https://pulsedive.com/",
           "description": "An analyst-centric threat intelligence platform that can provide users with comprehensive community threat intelligence to help identify known threats.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Lighthouse feed finder",
@@ -609,7 +597,7 @@
           "url": "https://lighthouseapp.io/tools/feed-finder",
           "description": "Search for a RSS Feed for a domain.",
           "requiresAccount": false,
-          "lastVerified": "2025-12-23"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "ThreatConnect",
@@ -617,7 +605,7 @@
           "url": "https://app.threatconnect.com/login.xhtml",
           "description": "Threat Intelligence Platform for companies to aggregate and act upon threat intelligence.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -628,9 +616,9 @@
           "name": "Cloud Security Alliance Cloud Controls Matrix (CCM)",
           "type": "link",
           "url": "https://cloudsecurityalliance.org/artifacts/cloud-controls-matrix-v4",
-          "description": "he Cloud Controls Matrix (CCM) is a cybersecurity control framework that maps to industry best practices and is considered the standard for cloud security and privacy.",
+          "description": "The Cloud Controls Matrix (CCM) is a cybersecurity control framework that maps to industry best practices and is considered the standard for cloud security and privacy.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Confiant Malvertising Attack Matrix",
@@ -638,7 +626,7 @@
           "url": "https://matrix.confiant.com/#matrix",
           "description": "Detailing threat actors through Malvertising Activity.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "ITM Insider Threat Matrix",
@@ -646,7 +634,7 @@
           "url": "https://insiderthreatmatrix.org/",
           "description": "ITM is a continually growing framework for Digital Investigators investigating instances of computer-enabled insider threats in organizations of any size.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "MITRE Atlas (AI)",
@@ -654,7 +642,7 @@
           "url": "https://atlas.mitre.org/matrices/ATLAS",
           "description": "Navigate threats to AI systems through real-world insights.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "MITRE Cloud Matrix",
@@ -662,7 +650,7 @@
           "url": "https://attack.mitre.org/matrices/enterprise/cloud/",
           "description": "The tactics and techniques representing the MITRE ATT&CK® cloud platforms.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Microsoft DevOps Threat Matrix",
@@ -670,7 +658,7 @@
           "url": "https://www.microsoft.com/en-us/security/blog/2023/04/06/devops-threat-matrix/",
           "description": "Our goal for developing the threat matrix for DevOps is to build a comprehensive knowledgebase that defenders can use to keep track of and build defenses against relevant attack techniques.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Microsoft Threat Matrix for Kubernetes",
@@ -678,7 +666,7 @@
           "url": "https://www.microsoft.com/en-us/security/blog/2021/03/23/secure-containerized-environments-with-updated-threat-matrix-for-kubernetes/",
           "description": "Threat Matrix.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Microsoft Threat Matrix for Storage Services",
@@ -686,7 +674,7 @@
           "url": "https://microsoft.github.io/Threat-matrix-for-storage-services/",
           "description": "The purpose of the threat matrix for storage services is to conceptualize the known tactics, techniques, and procedures (TTP) that adversaries may use against this type accounts.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "OWASP Threat and Safeguard Matrix (TaSM)",
@@ -694,7 +682,7 @@
           "url": "https://owasp.org/www-project-threat-and-safeguard-matrix/",
           "description": "The Threat and Safeguard Matrix (TaSM) is an action-oriented view to safeguard and enable the business created by CISO Tradecraft.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Space Attack Research and Tactic Analysis (SPARTA) matrix",
@@ -702,7 +690,7 @@
           "url": "https://sparta.aerospace.org/",
           "description": "SPARTA is intended to provide unclassified information to space professionals about how spacecraft may be compromised via cyber and traditional counterspace means.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Own the Browser",
@@ -710,7 +698,7 @@
           "url": "https://ownthebrowser.com/browsers/",
           "description": "Browser Directory - Explore browser profiles and assessments",
           "requiresAccount": false,
-          "lastVerified": "2026-03-10"
+          "lastVerified": "2026-03-17"
         }
       ]
     },
@@ -723,15 +711,7 @@
           "url": "https://www.abuseipdb.com/",
           "description": "Provide a central blacklist for webmasters, system administrators, and other interested parties to report and find IP addresses that have been associated with malicious activity online.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
-        },
-        {
-          "name": "BinaryEdge",
-          "type": "link",
-          "url": "https://app.binaryedge.io/login",
-          "description": "Scan the entire public internet, create real-time threat intelligence streams, and reports that show the exposure of what is connected to the Internet.",
-          "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Censys",
@@ -739,7 +719,7 @@
           "url": "https://censys.io/login",
           "description": "Uses Internet scan data to give organizations the visibility they need to defend against attacks and improve their overall security hygiene.",
           "requiresAccount": true,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Cisco Talos",
@@ -747,7 +727,7 @@
           "url": "https://www.talosintelligence.com/",
           "description": "The Talos IP and Domain Reputation Center is the world’s most comprehensive real-time threat detection network.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "DNSDumpster",
@@ -755,7 +735,7 @@
           "url": "https://dnsdumpster.com/",
           "description": "Domain research tool that can discover hosts related to a domain.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "DNSlytics",
@@ -763,7 +743,7 @@
           "url": "https://dnslytics.com/",
           "description": "Find out everything about a domain name, IP address or provider.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "SecurityTrails",
@@ -771,7 +751,7 @@
           "url": "https://securitytrails.com/",
           "description": "World's largest repository of historical DNS data.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Google Safe Browsing",
@@ -779,7 +759,7 @@
           "url": "https://transparencyreport.google.com/safe-browsing/search?hl=en",
           "description": "Check site status in Google Safe Browsing database.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "HackerTarget",
@@ -787,7 +767,7 @@
           "url": "https://hackertarget.com/dns-lookup/",
           "description": "Domain research tool that can discover hosts related to a domain.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "IPQS",
@@ -795,7 +775,7 @@
           "url": "https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/",
           "description": "Search Accurate IP Details — Check Proxy, VPN, or TOR Activity With Anonymous Proxy & VPN Detection.",
           "requiresAccount": false,
-          "lastVerified": "2026-03-12"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "IPVoid",
@@ -803,7 +783,7 @@
           "url": "http://www.ipvoid.com/",
           "description": "IP address tools to discover details about IP addresses.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Ipinfo.io",
@@ -811,7 +791,7 @@
           "url": "https://ipinfo.io/",
           "description": "The most reliable, accurate, and in-depth source of IP address data available anywhere.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Lookyloo",
@@ -819,7 +799,7 @@
           "url": "https://lookyloo.circl.lu/capture",
           "description": "Tool developed by CIRCL (the Luxembourg CERT) that helps to have a quick overview of a website by scraping it and displaying a tree of domains calling each other.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "MultiRBL",
@@ -827,7 +807,7 @@
           "url": "http://multirbl.valli.org/",
           "description": "IP check for sending Mailservers.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Onyphe",
@@ -835,7 +815,7 @@
           "url": "https://search.onyphe.io/",
           "description": "Search engine for open-source and cyber threat intelligence data collected by crawling various sources available on the Internet or by listening to Internet background noise. ONYPHE does correlate this information with data gathered by performing active Internet scanning for connected devices.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Robtex",
@@ -843,7 +823,7 @@
           "url": "https://www.robtex.com/",
           "description": "Gather public information about IP numbers, domain names, hostnames. Autonomous systems, routes, etc.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "SSL Blacklist",
@@ -851,7 +831,7 @@
           "url": "https://sslbl.abuse.ch/blacklist/",
           "description": "List of \"bad\" SSL certificates identified by abuse.ch to be associated with malware or botnet activities.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "ScreenshotMachine",
@@ -859,7 +839,7 @@
           "url": "https://www.screenshotmachine.com/",
           "description": "Online tool that creates screenshots of websites in a safe way.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Shodan",
@@ -867,7 +847,7 @@
           "url": "https://www.shodan.io/",
           "description": "The world's first search engine for Internet-connected devices.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "ThreatMiner",
@@ -875,7 +855,7 @@
           "url": "https://www.threatminer.org/",
           "description": "Free analysis from data collection and provide intelligence analysis.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "URLVoid",
@@ -883,7 +863,7 @@
           "url": "https://www.urlvoid.com/",
           "description": "Analyze a website through multiple blacklist engines and online reputation tools.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "URLscan.io",
@@ -891,7 +871,7 @@
           "url": "https://urlscan.io/",
           "description": "Analyse websites and the resources they request. it will let you take a look at the individual resources that are requested when a site is visited.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "Validin",
@@ -899,7 +879,7 @@
           "url": "https://app.validin.com/login",
           "description": "Connect the dots across threat indicators. Validin correlates unrelated IPs, domains, and hashes with organized threat activity, analyzes registration and hosting patterns, and attributes domains and IPs to ongoing APT activity.",
           "requiresAccount": true,
-          "lastVerified": "2026-02-10"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "VirusTotal",
@@ -907,7 +887,7 @@
           "url": "https://www.virustotal.com/#/home/url",
           "description": "Compare URL categorization from multiple URL filtering solutions vendors.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "WebCheck",
@@ -915,15 +895,15 @@
           "url": "https://web-check.xyz/",
           "description": "We give you X-RayVision for your Website",
           "requiresAccount": false,
-          "lastVerified": "2026-02-09"
+          "lastVerified": "2026-03-17"
         },
         {
           "name": "ZoomEye",
           "type": "link",
-          "url": "https://www.zoomeye.org/",
+          "url": "https://www.zoomeye.ai/",
           "description": "Cyberspace Search Engine recording information of devices, websites, services and components, etc.",
           "requiresAccount": false,
-          "lastVerified": "2025-01-16"
+          "lastVerified": "2026-03-17"
         }
       ]
     }

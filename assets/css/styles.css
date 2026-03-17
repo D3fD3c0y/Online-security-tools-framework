@@ -14,6 +14,7 @@
   --shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
   --tag: #213150;
   --match: #fff0a8;
+  --restricted: #d4a5ff;
 }
 
 body.light {
@@ -32,6 +33,7 @@ body.light {
   --shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
   --tag: #edf3ff;
   --match: #ffe96b;
+  --restricted: #7a39b6;
 }
 
 * {
@@ -319,6 +321,7 @@ input[type="search"] {
   background: transparent;
   border: none;
   padding: 0;
+  text-align: left;
 }
 
 .node-label {
@@ -331,6 +334,63 @@ input[type="search"] {
 
 .node-link:hover {
   text-decoration: none;
+}
+
+.tree-open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.25rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--accent);
+  text-decoration: none;
+  margin-left: auto;
+}
+
+.tree-open-btn:hover {
+  text-decoration: none;
+  border-color: var(--accent);
+}
+
+.inline-node-details {
+  margin: 0.35rem 0 0.5rem 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel-2) 70%, transparent);
+  padding: 0.85rem 0.95rem;
+}
+
+.inline-node-details__body {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.inline-node-details__description {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.inline-node-details__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.inline-node-details__path {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.inline-node-details__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
 
 .node-icon {
@@ -391,6 +451,11 @@ input[type="search"] {
   word-break: break-word;
   white-space: normal;
   line-height: 1.35;
+}
+
+.badge.restricted-badge {
+  border-color: color-mix(in srgb, var(--restricted) 55%, var(--border));
+  color: var(--restricted);
 }
 
 .children.collapsed {
@@ -680,5 +745,13 @@ mark {
   .build-badge-inline {
     width: 100%;
     min-width: 0;
+  }
+
+  .inline-node-details {
+    margin-left: 0.5rem;
+  }
+
+  .tree-open-btn {
+    margin-left: 0;
   }
 }

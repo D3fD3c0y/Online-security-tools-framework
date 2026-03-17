@@ -248,6 +248,7 @@ function enrichTree(node, parent = null, depth = 0) {
   node.children = Array.isArray(node.children) ? node.children : [];
   node.isFolder = node.children.length > 0;
   node.requiresAccount = Boolean(node.requiresAccount);
+  node.restricted = Boolean(node.restricted);
 
   node.displayName = getNodeLabel(node);
   node.displayDescription = getNodeDescription(node);
@@ -531,6 +532,56 @@ function renderSearchSummaryPanel() {
   `;
 }
 
+function renderInlineNodeDetails(node) {
+  const verificationMeta = !node.isFolder ? getVerificationMeta(node) : null;
+  const verificationBadge = verificationMeta
+    ? `<span class="${verificationMeta.className}" title="${escapeHtml(verificationMeta.title)}">${escapeHtml(verificationMeta.shortLabel)}</span>`
+    : '';
+
+  const verifiedDateBadge = node.lastVerified
+    ? `<span class="badge">Last verified: ${escapeHtml(node.lastVerified)}</span>`
+    : '';
+
+  const accountBadge = node.requiresAccount
+    ? '<span class="badge account">Account required</span>'
+    : '<span class="badge">No account required</span>';
+
+  const restrictedBadge = node.restricted
+    ? '<span class="badge restricted-badge">Restricted placeholder</span>'
+    : '';
+
+  const categorySummaryBadge = node.isFolder
+    ? `<span class="badge category-meta">${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'}</span>`
+    : '';
+
+  const nestedCategoryBadge = node.isFolder && node !== root
+    ? `<span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>`
+    : '';
+
+  return `
+    <div class="inline-node-details__body">
+      <p class="inline-node-details__description">
+        ${escapeHtml(node.displayDescription || (node.isFolder ? 'Category folder' : 'No description provided.'))}
+      </p>
+      <div class="inline-node-details__meta">
+        ${accountBadge}
+        ${verificationBadge}
+        ${verifiedDateBadge}
+        ${restrictedBadge}
+        ${categorySummaryBadge}
+        ${nestedCategoryBadge}
+      </div>
+      <div class="inline-node-details__path">
+        ${escapeHtml(getNodePath(node))}
+      </div>
+      <div class="inline-node-details__actions">
+        ${buildActionLink(node.url, 'Open resource', 'primary-link')}
+        ${buildActionLink(node.url, 'Open in new tab', 'secondary-btn')}
+      </div>
+    </div>
+  `;
+}
+
 function renderDetails(node) {
   const summaryPanel = renderSearchSummaryPanel();
 
@@ -575,6 +626,10 @@ function renderDetails(node) {
     ? `<span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>`
     : '';
 
+  const restrictedBadge = node.restricted
+    ? '<span class="badge restricted-badge">Restricted placeholder</span>'
+    : '';
+
   const pathBadge = `<span class="badge path-badge">${escapeHtml(getNodePath(node))}</span>`;
 
   const extraPanel = node === root || node.isFolder
@@ -600,6 +655,7 @@ function renderDetails(node) {
       ${verifiedDateBadge}
       ${categorySummaryBadge}
       ${nestedCategoryBadge}
+      ${restrictedBadge}
       ${parentBadge}
       ${pathBadge}
     </div>
@@ -691,25 +747,13 @@ function makeTreeNode(node) {
   icon.className = `node-icon ${node.isFolder ? 'folder' : ''}`;
   row.appendChild(icon);
 
-  const label = node.url && !node.isFolder
-    ? document.createElement('a')
-    : document.createElement('button');
-
-  label.className = node.url && !node.isFolder ? 'node-link' : 'node-label';
+  const label = document.createElement('button');
+  label.className = 'node-label';
+  label.type = 'button';
   label.innerHTML = highlight(node.displayName || node.name || '', currentQuery);
 
-  if (node.url && !node.isFolder) {
-    label.href = node.url;
-    label.target = '_blank';
-    label.rel = 'noreferrer noopener';
-  } else {
-    label.type = 'button';
-  }
-
   label.addEventListener('click', (event) => {
-    if (!node.url || node.isFolder) {
-      event.preventDefault();
-    }
+    event.preventDefault();
 
     selectedId = node.id;
 
@@ -742,9 +786,30 @@ function makeTreeNode(node) {
     if (node.lastVerified) {
       appendBadge(row, 'badge', node.lastVerified, `Last verified on ${node.lastVerified}`);
     }
+
+    if (node.restricted) {
+      appendBadge(row, 'badge restricted-badge', 'Restricted', 'Restricted placeholder');
+    }
+
+    if (node.url) {
+      const openBtn = document.createElement('a');
+      openBtn.className = 'tree-open-btn';
+      openBtn.href = node.url;
+      openBtn.target = '_blank';
+      openBtn.rel = 'noreferrer noopener';
+      openBtn.textContent = 'Open';
+      row.appendChild(openBtn);
+    }
   }
 
   li.appendChild(row);
+
+  if (selectedId === node.id) {
+    const inlineDetails = document.createElement('div');
+    inlineDetails.className = 'inline-node-details';
+    inlineDetails.innerHTML = renderInlineNodeDetails(node);
+    li.appendChild(inlineDetails);
+  }
 
   if (node.isFolder) {
     const childList = document.createElement('ul');

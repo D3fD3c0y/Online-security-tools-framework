@@ -12,9 +12,7 @@ on:
       - main
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 concurrency:
   group: pages
@@ -24,8 +22,17 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  sync-build-deploy:
+  sync:
+    name: Sync generated data
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    outputs:
+      source_repo: ${{ steps.source_meta.outputs.source_repo }}
+      source_ref: ${{ steps.source_meta.outputs.source_ref }}
+      source_sha: ${{ steps.source_meta.outputs.source_sha }}
+      source_short_sha: ${{ steps.source_meta.outputs.source_short_sha }}
 
     steps:
       - name: Checkout framework repository
@@ -38,9 +45,51 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Resolve source metadata
+        id: source_meta
+        shell: bash
+        run: |
+          SOURCE_REPO="${{ github.event.client_payload.source_repo || '' }}"
+          SOURCE_REF="${{ github.event.client_payload.source_ref || '' }}"
+          SOURCE_SHA="${{ github.event.client_payload.source_sha || '' }}"
+          SOURCE_SHORT_SHA=""
+          if [ -n "$SOURCE_SHA" ]; then
+            SOURCE_SHORT_SHA="${SOURCE_SHA::7}"
+          fi
+
+          {
+            echo "source_repo=$SOURCE_REPO"
+            echo "source_ref=$SOURCE_REF"
+            echo "source_sha=$SOURCE_SHA"
+            echo "source_short_sha=$SOURCE_SHORT_SHA"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Sync tree.json from source repository
         run: |
           python scripts/sync_tree.py
+
+      - name: Validate generated tree.json
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/tree.json")
+          if not path.exists():
+              raise SystemExit("data/tree.json was not generated")
+
+          with path.open("r", encoding="utf-8") as fh:
+              data = json.load(fh)
+
+          if not isinstance(data, dict):
+              raise SystemExit("tree.json root must be an object")
+
+          if not isinstance(data.get("children"), list):
+              raise SystemExit("tree.json root.children must be a list")
+
+          print(f"Validated tree.json with {len(data['children'])} top-level categories.")
+          PY
 
       - name: Commit updated tree.json if changed
         shell: bash
@@ -55,47 +104,79 @@ jobs:
             git push
           fi
 
+  build-deploy:
+    name: Build and deploy GitHub Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: sync
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout framework repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+
+      - name: Verify required site files exist
+        shell: bash
+        run: |
+          test -f index.html
+          test -f assets/js/app.js
+          test -f assets/css/styles.css
+          test -f data/tree.json
+
+      - name: Prepare publish directory
+        shell: bash
+        run: |
+          rm -rf site
+          mkdir -p site
+          cp index.html site/
+          cp -R assets site/
+          cp -R data site/
+          if [ -f CNAME ]; then
+            cp CNAME site/
+          fi
 
       - name: Generate build metadata
         shell: bash
         run: |
-          mkdir -p data
+          mkdir -p site/data
 
           SHORT_SHA="${GITHUB_SHA::7}"
           BUILD_VERSION="v${GITHUB_RUN_NUMBER}-${SHORT_SHA}"
           PUSHED_AT="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
 
-          SOURCE_REPO="${{ github.event.client_payload.source_repo || '' }}"
-          SOURCE_REF="${{ github.event.client_payload.source_ref || '' }}"
-          SOURCE_SHA="${{ github.event.client_payload.source_sha || '' }}"
-          SOURCE_SHORT_SHA=""
-          if [ -n "$SOURCE_SHA" ]; then
-            SOURCE_SHORT_SHA="${SOURCE_SHA::7}"
-          fi
-
-          cat > data/build-meta.json <<EOF
+          cat > site/data/build-meta.json <<EOF
           {
             "version": "${BUILD_VERSION}",
             "pushedAt": "${PUSHED_AT}",
             "commit": "${GITHUB_SHA}",
             "shortSha": "${SHORT_SHA}",
             "runNumber": "${GITHUB_RUN_NUMBER}",
-            "sourceRepo": "${SOURCE_REPO}",
-            "sourceRef": "${SOURCE_REF}",
-            "sourceSha": "${SOURCE_SHA}",
-            "sourceShortSha": "${SOURCE_SHORT_SHA}"
+            "sourceRepo": "${{ needs.sync.outputs.source_repo }}",
+            "sourceRef": "${{ needs.sync.outputs.source_ref }}",
+            "sourceSha": "${{ needs.sync.outputs.source_sha }}",
+            "sourceShortSha": "${{ needs.sync.outputs.source_short_sha }}"
           }
           EOF
 
-          echo "Generated data/build-meta.json"
-          cat data/build-meta.json
+          echo "Generated site/data/build-meta.json"
+          cat site/data/build-meta.json
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: ./site
 
       - name: Deploy to GitHub Pages
         id: deployment

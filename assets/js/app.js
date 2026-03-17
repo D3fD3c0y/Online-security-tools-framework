@@ -8,6 +8,9 @@ const collapseAllBtn = document.getElementById('collapse-all');
 const themeToggleBtn = document.getElementById('theme-toggle');
 const treeStatus = document.getElementById('tree-status');
 
+const exportMarkdownBtn = document.getElementById('export-markdown');
+const exportCsvBtn = document.getElementById('export-csv');
+
 const statCategories = document.getElementById('stat-categories');
 const statLinks = document.getElementById('stat-links');
 const statAccount = document.getElementById('stat-account');
@@ -17,7 +20,11 @@ const DEFAULT_BUILD_META = {
   pushedAt: 'local / unknown',
   commit: '',
   shortSha: '',
-  runNumber: ''
+  runNumber: '',
+  sourceRepo: '',
+  sourceRef: '',
+  sourceSha: '',
+  sourceShortSha: ''
 };
 
 let buildMeta = { ...DEFAULT_BUILD_META };
@@ -63,6 +70,30 @@ function getNodeLabel(node) {
 
 function getNodeDescription(node) {
   return decodeHtmlEntities(node?.description || '');
+}
+
+function getNodePath(node) {
+  const parts = [];
+  let current = node;
+
+  while (current) {
+    parts.unshift(getNodeLabel(current));
+    current = current.parent;
+  }
+
+  return parts.join(' > ');
+}
+
+function getNodeCategoryPath(node) {
+  const parts = [];
+  let current = node?.parent || null;
+
+  while (current && current !== root) {
+    parts.unshift(getNodeLabel(current));
+    current = current.parent;
+  }
+
+  return parts.join(' > ');
 }
 
 function parseDateStrict(dateString) {
@@ -118,29 +149,85 @@ function getVerificationMeta(node) {
     shortLabel: 'Stale',
     className: 'badge verify-stale',
     title: `Verified ${days} days ago`
-  };
+    };
 }
 
 function computeDerivedStats(node) {
   if (!node.isFolder) {
     node.resourceCount = 1;
+    node.displayResourceCount = 1;
     node.categoryCount = 0;
-    return { resourceCount: 1, categoryCount: 0 };
+    return {
+      resourceCount: 1,
+      displayResourceCount: 1,
+      categoryCount: 0
+    };
   }
 
   let resourceCount = 0;
+  let displayResourceCount = 0;
   let categoryCount = 0;
 
   node.children.forEach(child => {
     const childStats = computeDerivedStats(child);
     resourceCount += childStats.resourceCount;
+    displayResourceCount += childStats.displayResourceCount;
     categoryCount += child.isFolder ? 1 + childStats.categoryCount : childStats.categoryCount;
   });
 
   node.resourceCount = resourceCount;
   node.categoryCount = categoryCount;
 
-  return { resourceCount, categoryCount };
+  if (node.restricted && typeof node.sourceCount === 'number') {
+    node.displayResourceCount = node.sourceCount;
+  } else {
+    node.displayResourceCount = displayResourceCount;
+  }
+
+  return {
+    resourceCount,
+    displayResourceCount: node.displayResourceCount,
+    categoryCount
+  };
+}
+
+function getSelfMatchScore(node, query) {
+  if (!query) return 0;
+
+  const q = query.trim().toLowerCase();
+  if (!q) return 0;
+
+  const name = node.displayNameLower || '';
+  const desc = node.displayDescriptionLower || '';
+  const url = node.urlLower || '';
+
+  let score = 0;
+
+  if (name === q) {
+    score = Math.max(score, 1000);
+  } else if (name.startsWith(q)) {
+    score = Math.max(score, 850);
+  } else if (name.includes(q)) {
+    score = Math.max(score, 700);
+  }
+
+  if (desc === q) {
+    score = Math.max(score, 550);
+  } else if (desc.startsWith(q)) {
+    score = Math.max(score, 420);
+  } else if (desc.includes(q)) {
+    score = Math.max(score, 280);
+  }
+
+  if (url.includes(q)) {
+    score = Math.max(score, 160);
+  }
+
+  if (node.restricted) {
+    score -= 10;
+  }
+
+  return Math.max(score, 0);
 }
 
 function enrichTree(node, parent = null, depth = 0) {
@@ -154,6 +241,10 @@ function enrichTree(node, parent = null, depth = 0) {
 
   node.displayName = getNodeLabel(node);
   node.displayDescription = getNodeDescription(node);
+  node.displayNameLower = node.displayName.toLowerCase();
+  node.displayDescriptionLower = node.displayDescription.toLowerCase();
+  node.urlLower = (node.url || '').toLowerCase();
+
   node.searchText = [
     node.displayName,
     node.displayDescription,
@@ -164,6 +255,9 @@ function enrichTree(node, parent = null, depth = 0) {
     .join(' ')
     .toLowerCase();
 
+  node.matchScore = 0;
+  node.selfMatchScore = 0;
+
   allNodes.push(node);
   node.children.forEach(child => enrichTree(child, node, depth + 1));
   return node;
@@ -172,13 +266,14 @@ function enrichTree(node, parent = null, depth = 0) {
 function evaluateMatches(node, query) {
   const selfMatches = !query || node.searchText.includes(query);
 
-  node.children.forEach(child => evaluateMatches(child, query));
-  const childMatches = node.children.some(child => child.visible || child.queryMatches);
+  const childResults = node.children.map(child => evaluateMatches(child, query));
+  const childMatches = childResults.some(Boolean);
 
   const accountPass = !showNoAccountOnly || !node.requiresAccount;
 
   node.selfMatches = selfMatches;
   node.queryMatches = selfMatches || childMatches;
+  node.selfMatchScore = getSelfMatchScore(node, query);
 
   if (node.isFolder) {
     const anyVisibleChild = node.children.some(child => child.visible);
@@ -187,7 +282,56 @@ function evaluateMatches(node, query) {
     node.visible = accountPass && selfMatches;
   }
 
+  const visibleChildScores = node.children
+    .filter(child => child.visible)
+    .map(child => child.matchScore || 0);
+
+  const bestChildScore = visibleChildScores.length ? Math.max(...visibleChildScores) : 0;
+
+  if (!query) {
+    node.matchScore = 0;
+  } else if (node.isFolder) {
+    node.matchScore = Math.max(node.selfMatchScore, bestChildScore > 0 ? bestChildScore - 1 : 0);
+  } else {
+    node.matchScore = node.visible ? node.selfMatchScore : 0;
+  }
+
   return node.queryMatches;
+}
+
+function compareSearchRank(a, b) {
+  if (a.visible !== b.visible) {
+    return a.visible ? -1 : 1;
+  }
+
+  if ((b.matchScore || 0) !== (a.matchScore || 0)) {
+    return (b.matchScore || 0) - (a.matchScore || 0);
+  }
+
+  if (a.selfMatches !== b.selfMatches) {
+    return a.selfMatches ? -1 : 1;
+  }
+
+  if (a.isFolder !== b.isFolder) {
+    return a.isFolder ? -1 : 1;
+  }
+
+  if ((b.displayResourceCount || 0) !== (a.displayResourceCount || 0)) {
+    return (b.displayResourceCount || 0) - (a.displayResourceCount || 0);
+  }
+
+  return (a.displayName || '').localeCompare(b.displayName || '', undefined, { sensitivity: 'base' });
+}
+
+function getSortedChildren(node) {
+  const children = [...node.children];
+
+  if (!currentQuery) {
+    return children;
+  }
+
+  children.sort(compareSearchRank);
+  return children;
 }
 
 function expandMatches(node) {
@@ -206,22 +350,30 @@ function resetExpansion() {
   expanded = new Set([root.id]);
 }
 
-function countVisibleLinks(node) {
+function countVisibleResources(node) {
   if (!node.visible) return 0;
-  if (!node.isFolder) return 1;
-  return node.children.reduce((sum, child) => sum + countVisibleLinks(child), 0);
+
+  if (!node.isFolder) {
+    return 1;
+  }
+
+  if (node.restricted && typeof node.sourceCount === 'number') {
+    return node.sourceCount;
+  }
+
+  return node.children.reduce((sum, child) => sum + countVisibleResources(child), 0);
 }
 
 function renderStats() {
   const categoryCount = allNodes.filter(n => n.isFolder && n !== root).length;
-  const linkCount = allNodes.filter(n => !n.isFolder).length;
+  const linkCount = root ? root.displayResourceCount : 0;
   const accountCount = allNodes.filter(n => !n.isFolder && n.requiresAccount).length;
 
   statCategories.textContent = String(categoryCount);
   statLinks.textContent = String(linkCount);
   statAccount.textContent = String(accountCount);
 
-  const visibleResources = root ? countVisibleLinks(root) : 0;
+  const visibleResources = root ? countVisibleResources(root) : 0;
 
   const statusParts = [];
   statusParts.push(`Showing ${visibleResources} resource${visibleResources === 1 ? '' : 's'}`);
@@ -243,10 +395,19 @@ function buildActionLink(url, text, className) {
 }
 
 function renderInlineNodeDetails(node) {
-  const verificationMeta = !node.isFolder ? getVerificationMeta(node) : null;
-  const verificationBadge = verificationMeta
-    ? `<span class="${verificationMeta.className}" title="${escapeHtml(verificationMeta.title)}">${escapeHtml(verificationMeta.shortLabel)}</span>`
-    : '';
+  if (node.isFolder) {
+    return `
+      <div class="inline-node-details__body">
+        <div class="inline-node-details__meta">
+          <span class="badge category-meta">${node.displayResourceCount} resource${node.displayResourceCount === 1 ? '' : 's'}</span>
+          <span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  const verificationMeta = getVerificationMeta(node);
+  const verificationBadge = `<span class="${verificationMeta.className}" title="${escapeHtml(verificationMeta.title)}">${escapeHtml(verificationMeta.shortLabel)}</span>`;
 
   const verifiedDateBadge = node.lastVerified
     ? `<span class="badge">Last verified: ${escapeHtml(node.lastVerified)}</span>`
@@ -260,29 +421,19 @@ function renderInlineNodeDetails(node) {
     ? '<span class="badge restricted-badge">Restricted placeholder</span>'
     : '';
 
-  const categorySummaryBadge = node.isFolder
-    ? `<span class="badge category-meta">${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'}</span>`
-    : '';
-
-  const nestedCategoryBadge = node.isFolder && node !== root
-    ? `<span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>`
-    : '';
-
   return `
     <div class="inline-node-details__body">
       <p class="inline-node-details__description">
-        ${escapeHtml(node.displayDescription || (node.isFolder ? 'Category folder' : 'No description provided.'))}
+        ${escapeHtml(node.displayDescription || 'No description provided.')}
       </p>
       <div class="inline-node-details__meta">
         ${accountBadge}
         ${verificationBadge}
         ${verifiedDateBadge}
         ${restrictedBadge}
-        ${categorySummaryBadge}
-        ${nestedCategoryBadge}
       </div>
       <div class="inline-node-details__actions">
-        ${buildActionLink(!node.isFolder ? node.url : '', 'Open resource', 'primary-link')}
+        ${buildActionLink(node.url, 'Open resource', 'primary-link')}
         ${buildActionLink(node.url, 'Open in new tab', 'secondary-btn')}
       </div>
     </div>
@@ -302,6 +453,110 @@ function toggleInlineCard(node) {
     openInlineIds.delete(node.id);
   } else {
     openInlineIds.add(node.id);
+  }
+}
+
+function focusNodeLabel(nodeId) {
+  requestAnimationFrame(() => {
+    const target = treeContainer.querySelector(`.node-label[data-node-id="${CSS.escape(nodeId)}"]`);
+    if (target) {
+      target.focus();
+    }
+  });
+}
+
+function getVisibleNodeLabels() {
+  return [...treeContainer.querySelectorAll('.node-label')].filter(el => {
+    const treeNode = el.closest('.tree-node');
+    return treeNode && !treeNode.classList.contains('hidden');
+  });
+}
+
+function getNodeById(nodeId) {
+  return allNodes.find(node => node.id === nodeId) || null;
+}
+
+function handleTreeKeyboardNavigation(event) {
+  const target = event.target;
+  if (!target.classList.contains('node-label')) return;
+
+  const nodeId = target.dataset.nodeId;
+  const node = getNodeById(nodeId);
+  if (!node) return;
+
+  const visibleLabels = getVisibleNodeLabels();
+  const currentIndex = visibleLabels.indexOf(target);
+
+  switch (event.key) {
+    case 'ArrowDown':
+      event.preventDefault();
+      if (currentIndex < visibleLabels.length - 1) {
+        visibleLabels[currentIndex + 1].focus();
+      }
+      break;
+
+    case 'ArrowUp':
+      event.preventDefault();
+      if (currentIndex > 0) {
+        visibleLabels[currentIndex - 1].focus();
+      }
+      break;
+
+    case 'Home':
+      event.preventDefault();
+      if (visibleLabels.length > 0) {
+        visibleLabels[0].focus();
+      }
+      break;
+
+    case 'End':
+      event.preventDefault();
+      if (visibleLabels.length > 0) {
+        visibleLabels[visibleLabels.length - 1].focus();
+      }
+      break;
+
+    case 'ArrowRight':
+      event.preventDefault();
+      if (node.isFolder && !expanded.has(node.id)) {
+        expanded.add(node.id);
+        render();
+        focusNodeLabel(node.id);
+      } else if (node.isFolder) {
+        const firstChild = getSortedChildren(node).find(child => child.visible);
+        if (firstChild) {
+          focusNodeLabel(firstChild.id);
+        }
+      } else if (!openInlineIds.has(node.id)) {
+        openInlineIds.add(node.id);
+        render();
+        focusNodeLabel(node.id);
+      }
+      break;
+
+    case 'ArrowLeft':
+      event.preventDefault();
+      if (node.isFolder && expanded.has(node.id)) {
+        expanded.delete(node.id);
+        render();
+        focusNodeLabel(node.id);
+      } else if (openInlineIds.has(node.id)) {
+        openInlineIds.delete(node.id);
+        render();
+        focusNodeLabel(node.id);
+      } else if (node.parent) {
+        focusNodeLabel(node.parent.id);
+      }
+      break;
+
+    case 'Enter':
+    case ' ':
+      event.preventDefault();
+      target.click();
+      break;
+
+    default:
+      break;
   }
 }
 
@@ -335,6 +590,7 @@ function makeTreeNode(node) {
         expanded.add(node.id);
       }
       render();
+      focusNodeLabel(node.id);
     });
 
     row.appendChild(toggle);
@@ -351,11 +607,12 @@ function makeTreeNode(node) {
   const label = document.createElement('button');
   label.className = 'node-label';
   label.type = 'button';
+  label.dataset.nodeId = node.id;
   label.innerHTML = highlight(node.displayName || node.name || '', currentQuery);
+  label.setAttribute('aria-expanded', node.isFolder ? String(expanded.has(node.id)) : String(openInlineIds.has(node.id)));
 
   label.addEventListener('click', (event) => {
     event.preventDefault();
-
     selectedId = node.id;
 
     if (node.isFolder) {
@@ -364,6 +621,7 @@ function makeTreeNode(node) {
 
     toggleInlineCard(node);
     render();
+    focusNodeLabel(node.id);
   });
 
   row.appendChild(label);
@@ -372,8 +630,15 @@ function makeTreeNode(node) {
     appendBadge(
       row,
       'badge category-meta',
-      `${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'}`,
-      `${node.resourceCount} resource${node.resourceCount === 1 ? '' : 's'} inside this category`
+      `${node.displayResourceCount} resource${node.displayResourceCount === 1 ? '' : 's'}`,
+      `${node.displayResourceCount} resource${node.displayResourceCount === 1 ? '' : 's'} inside this category`
+    );
+
+    appendBadge(
+      row,
+      'badge category-meta',
+      `${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}`,
+      `${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'} inside this category`
     );
   } else {
     if (node.requiresAccount) {
@@ -419,7 +684,7 @@ function makeTreeNode(node) {
       childList.classList.add('collapsed');
     }
 
-    node.children.forEach(child => {
+    getSortedChildren(node).forEach(child => {
       childList.appendChild(makeTreeNode(child));
     });
 
@@ -437,6 +702,10 @@ function renderLegendOnly() {
         <div class="legend-item">
           <span class="badge category-meta">12 resources</span>
           <span>Category contains this many resources.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge category-meta">3 subcategories</span>
+          <span>Category contains this many nested categories.</span>
         </div>
         <div class="legend-item">
           <span class="badge account">Account required</span>
@@ -495,6 +764,126 @@ async function copyTextToClipboard(text) {
   return true;
 }
 
+function downloadTextFile(filename, content, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+
+  URL.revokeObjectURL(url);
+}
+
+function collectVisibleExportRows(node, rows = []) {
+  if (!node.visible) {
+    return rows;
+  }
+
+  if (node.isFolder) {
+    if (node.restricted && typeof node.sourceCount === 'number') {
+      rows.push({
+        category: getNodePath(node),
+        name: 'Restricted Placeholder',
+        url: '',
+        description: node.displayDescription || 'Restricted placeholder category',
+        requiresAccount: '',
+        lastVerified: '',
+        restricted: 'Yes',
+        resources: node.displayResourceCount,
+        subcategories: node.categoryCount
+      });
+      return rows;
+    }
+
+    node.children.forEach(child => collectVisibleExportRows(child, rows));
+    return rows;
+  }
+
+  rows.push({
+    category: getNodeCategoryPath(node),
+    name: node.displayName || '',
+    url: node.url || '',
+    description: node.displayDescription || '',
+    requiresAccount: node.requiresAccount ? 'Yes' : 'No',
+    lastVerified: node.lastVerified || '',
+    restricted: node.restricted ? 'Yes' : 'No',
+    resources: '',
+    subcategories: ''
+  });
+
+  return rows;
+}
+
+function exportVisibleResultsToMarkdown() {
+  if (!root) return;
+
+  const rows = collectVisibleExportRows(root, []);
+  const lines = [];
+
+  lines.push('# Visible Results');
+  lines.push('');
+  lines.push(`Generated: ${new Date().toISOString()}`);
+  lines.push('');
+
+  lines.push('| Category | Name | URL | Description | Account Required | Last Verified | Restricted |');
+  lines.push('| --- | --- | --- | --- | --- | --- | --- |');
+
+  rows.forEach(row => {
+    lines.push(
+      `| ${row.category || ''} | ${row.name || ''} | ${row.url || ''} | ${String(row.description || '').replace(/\|/g, '\\|')} | ${row.requiresAccount || ''} | ${row.lastVerified || ''} | ${row.restricted || ''} |`
+    );
+  });
+
+  downloadTextFile('visible-results.md', lines.join('\n'), 'text/markdown;charset=utf-8');
+}
+
+function csvEscape(value) {
+  const stringValue = String(value ?? '');
+  if (/[",\n]/.test(stringValue)) {
+    return `"${stringValue.replaceAll('"', '""')}"`;
+  }
+  return stringValue;
+}
+
+function exportVisibleResultsToCsv() {
+  if (!root) return;
+
+  const rows = collectVisibleExportRows(root, []);
+  const header = [
+    'Category',
+    'Name',
+    'URL',
+    'Description',
+    'Account Required',
+    'Last Verified',
+    'Restricted',
+    'Resources',
+    'Subcategories'
+  ];
+
+  const lines = [header.join(',')];
+
+  rows.forEach(row => {
+    lines.push([
+      row.category,
+      row.name,
+      row.url,
+      row.description,
+      row.requiresAccount,
+      row.lastVerified,
+      row.restricted,
+      row.resources,
+      row.subcategories
+    ].map(csvEscape).join(','));
+  });
+
+  downloadTextFile('visible-results.csv', lines.join('\n'), 'text/csv;charset=utf-8');
+}
+
 async function loadBuildMeta() {
   try {
     const response = await fetch('./data/build-meta.json', { cache: 'no-store' });
@@ -532,14 +921,21 @@ function ensureBuildMetaPlacement() {
     badge.className = 'build-badge-inline';
   }
 
+  const sourceLine = buildMeta.sourceShortSha
+    ? `Source ${escapeHtml(buildMeta.sourceShortSha)}`
+    : (buildMeta.sourceRepo ? escapeHtml(buildMeta.sourceRepo) : 'Source unknown');
+
   const titleParts = [];
-  if (buildMeta.commit) titleParts.push(`Commit: ${buildMeta.commit}`);
+  if (buildMeta.commit) titleParts.push(`Build commit: ${buildMeta.commit}`);
   if (buildMeta.runNumber) titleParts.push(`Run: ${buildMeta.runNumber}`);
+  if (buildMeta.sourceSha) titleParts.push(`Source commit: ${buildMeta.sourceSha}`);
+  if (buildMeta.sourceRef) titleParts.push(`Source ref: ${buildMeta.sourceRef}`);
   badge.title = titleParts.join(' • ');
 
   badge.innerHTML = `
     <div class="build-badge__version">${escapeHtml(buildMeta.version)}</div>
     <div class="build-badge__time">${escapeHtml(buildMeta.pushedAt)}</div>
+    <div class="build-badge__source">${sourceLine}</div>
   `;
 
   if (themeToggleBtn.parentElement !== stack) {
@@ -560,7 +956,9 @@ function ensureShareButton() {
     shareBtn.className = 'ghost-btn';
     shareBtn.textContent = 'Copy/share';
 
-    if (clearSearchBtn && clearSearchBtn.parentElement) {
+    if (exportCsvBtn && exportCsvBtn.parentElement) {
+      exportCsvBtn.insertAdjacentElement('afterend', shareBtn);
+    } else if (clearSearchBtn && clearSearchBtn.parentElement) {
       clearSearchBtn.insertAdjacentElement('afterend', shareBtn);
     }
   }
@@ -651,10 +1049,9 @@ async function init() {
   resetExpansion();
   applyThemePreference();
   await loadBuildMeta();
+  renderLegendOnly();
   ensureBuildMetaPlacement();
   ensureShareButton();
-  renderLegendOnly();
-
   render();
 }
 
@@ -696,6 +1093,11 @@ themeToggleBtn.addEventListener('click', () => {
   themeToggleBtn.setAttribute('aria-pressed', String(isLight));
   localStorage.setItem('sst-theme', isLight ? 'light' : 'dark');
 });
+
+exportMarkdownBtn.addEventListener('click', exportVisibleResultsToMarkdown);
+exportCsvBtn.addEventListener('click', exportVisibleResultsToCsv);
+
+treeContainer.addEventListener('keydown', handleTreeKeyboardNavigation);
 
 document.addEventListener('keydown', (event) => {
   if (event.key === '/' && document.activeElement !== searchInput) {

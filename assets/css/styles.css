@@ -325,8 +325,7 @@ input[type="search"] {
   height: 1.7rem;
 }
 
-.node-label,
-.node-link {
+.node-label {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -335,18 +334,7 @@ input[type="search"] {
   border: none;
   padding: 0;
   text-align: left;
-}
-
-.node-label {
   cursor: pointer;
-}
-
-.node-link {
-  text-decoration: none;
-}
-
-.node-link:hover {
-  text-decoration: none;
 }
 
 .tree-open-btn {
@@ -472,30 +460,6 @@ mark {
   padding: 0 0.15rem;
 }
 
-.details-title {
-  margin: 0 0 0.5rem;
-  font-size: 1.1rem;
-}
-
-.details-description {
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.meta-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.6rem 0 0.8rem;
-}
-
-.details-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.75rem;
-}
-
 .primary-link {
   display: inline-flex;
   align-items: center;
@@ -555,12 +519,6 @@ mark {
 .legend-title {
   margin: 0 0 0.65rem;
   font-size: 1rem;
-}
-
-.legend-copy {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
 }
 
 .legend-grid {

@@ -12,6 +12,7 @@
   --success: #57d9a3;
   --info: #8cc8ff;
   --restricted: #d4a5ff;
+  --insecure: #ffb86b;
   --shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
   --tag: #213150;
   --match: #fff0a8;
@@ -32,6 +33,7 @@ body.light {
   --success: #05603a;
   --info: #0b5cab;
   --restricted: #7a39b6;
+  --insecure: #a15a00;
   --shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
   --tag: #edf3ff;
   --match: #ffe96b;
@@ -102,6 +104,28 @@ input[type="search"] {
   width: min(1400px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 1.25rem 0 2rem;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--accent);
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
 }
 
 .hero,
@@ -354,6 +378,11 @@ input[type="search"] {
   border-radius: 8px;
 }
 
+.node-label[aria-current="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
 .node-label:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -468,6 +497,16 @@ input[type="search"] {
   color: var(--restricted);
 }
 
+.badge.insecure-link {
+  border-color: color-mix(in srgb, var(--insecure) 55%, var(--border));
+  color: var(--insecure);
+}
+
+.badge.invalid-link {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+  color: var(--danger);
+}
+
 .children.collapsed {
   display: none;
 }
@@ -519,6 +558,12 @@ mark {
 .ghost-btn:hover {
   text-decoration: none;
   border-color: var(--accent);
+}
+
+.secondary-btn--disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  user-select: none;
 }
 
 #copy-share-btn.copied {

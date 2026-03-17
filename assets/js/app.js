@@ -27,6 +27,10 @@ const DEFAULT_BUILD_META = {
   sourceShortSha: ''
 };
 
+const MAX_TREE_DEPTH = 12;
+const MAX_TREE_NODES = 10000;
+const MAX_STRING_LENGTH = 600;
+
 let buildMeta = { ...DEFAULT_BUILD_META };
 
 let root = null;
@@ -64,12 +68,48 @@ function highlight(text, query) {
   return safeText.replace(pattern, '<mark>$1</mark>');
 }
 
+function normalizeString(value, fallback = '') {
+  if (typeof value !== 'string') {
+    return fallback;
+  }
+  const trimmed = decodeHtmlEntities(value).trim();
+  return trimmed.length > MAX_STRING_LENGTH
+    ? `${trimmed.slice(0, MAX_STRING_LENGTH)}…`
+    : trimmed;
+}
+
+function sanitizeExternalUrl(value) {
+  if (typeof value !== 'string' || !value.trim()) {
+    return '';
+  }
+
+  const candidate = decodeHtmlEntities(value).trim();
+
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      return parsed.toString();
+    }
+    return '';
+  } catch {
+    return '';
+  }
+}
+
+function csvSafe(value) {
+  const stringValue = String(value ?? '');
+  if (/^[=+\-@]/.test(stringValue) || /^[\t\r]/.test(stringValue)) {
+    return `'${stringValue}`;
+  }
+  return stringValue;
+}
+
 function getNodeLabel(node) {
-  return decodeHtmlEntities(node?.name || '');
+  return normalizeString(node?.name || '');
 }
 
 function getNodeDescription(node) {
-  return decodeHtmlEntities(node?.description || '');
+  return normalizeString(node?.description || '');
 }
 
 function getNodePath(node) {
@@ -149,7 +189,7 @@ function getVerificationMeta(node) {
     shortLabel: 'Stale',
     className: 'badge verify-stale',
     title: `Verified ${days} days ago`
-    };
+  };
 }
 
 function computeDerivedStats(node) {
@@ -227,40 +267,84 @@ function getSelfMatchScore(node, query) {
     score -= 10;
   }
 
+  if (node.isInsecureUrl) {
+    score -= 5;
+  }
+
   return Math.max(score, 0);
 }
 
-function enrichTree(node, parent = null, depth = 0) {
-  node.id = `node-${idCounter++}`;
-  node.parent = parent;
-  node.depth = depth;
-  node.children = Array.isArray(node.children) ? node.children : [];
-  node.isFolder = node.children.length > 0;
-  node.requiresAccount = Boolean(node.requiresAccount);
-  node.restricted = Boolean(node.restricted);
+function normalizeTreeNode(input, parent = null, depth = 0, state = { count: 0 }) {
+  if (!input || typeof input !== 'object') {
+    return null;
+  }
 
-  node.displayName = getNodeLabel(node);
-  node.displayDescription = getNodeDescription(node);
-  node.displayNameLower = node.displayName.toLowerCase();
-  node.displayDescriptionLower = node.displayDescription.toLowerCase();
-  node.urlLower = (node.url || '').toLowerCase();
+  if (depth > MAX_TREE_DEPTH) {
+    return null;
+  }
 
-  node.searchText = [
-    node.displayName,
-    node.displayDescription,
-    node.url,
-    node.lastVerified
+  state.count += 1;
+  if (state.count > MAX_TREE_NODES) {
+    return null;
+  }
+
+  const childrenInput = Array.isArray(input.children) ? input.children : [];
+  const normalizedChildren = [];
+
+  for (const child of childrenInput) {
+    const normalizedChild = normalizeTreeNode(child, null, depth + 1, state);
+    if (normalizedChild) {
+      normalizedChildren.push(normalizedChild);
+    }
+  }
+
+  const normalized = {
+    id: `node-${idCounter++}`,
+    parent,
+    depth,
+    name: normalizeString(input.name || 'Unnamed'),
+    description: normalizeString(input.description || ''),
+    type: normalizeString(input.type || (normalizedChildren.length ? 'folder' : 'link')),
+    url: sanitizeExternalUrl(input.url || ''),
+    requiresAccount: Boolean(input.requiresAccount),
+    restricted: Boolean(input.restricted),
+    lastVerified: normalizeString(input.lastVerified || ''),
+    sourceCount: typeof input.sourceCount === 'number' && Number.isFinite(input.sourceCount)
+      ? Math.max(0, Math.floor(input.sourceCount))
+      : undefined,
+    children: normalizedChildren
+  };
+
+  normalized.isFolder = normalized.children.length > 0;
+  normalized.displayName = normalized.name;
+  normalized.displayDescription = normalized.description;
+  normalized.displayNameLower = normalized.displayName.toLowerCase();
+  normalized.displayDescriptionLower = normalized.displayDescription.toLowerCase();
+  normalized.urlLower = normalized.url.toLowerCase();
+  normalized.isInsecureUrl = normalized.url.startsWith('http://');
+
+  normalized.searchText = [
+    normalized.displayName,
+    normalized.displayDescription,
+    normalized.url,
+    normalized.lastVerified
   ]
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
 
-  node.matchScore = 0;
-  node.selfMatchScore = 0;
+  normalized.matchScore = 0;
+  normalized.selfMatchScore = 0;
+  normalized.selfMatches = false;
+  normalized.queryMatches = false;
+  normalized.visible = true;
 
-  allNodes.push(node);
-  node.children.forEach(child => enrichTree(child, node, depth + 1));
-  return node;
+  normalized.children.forEach(child => {
+    child.parent = normalized;
+  });
+
+  allNodes.push(normalized);
+  return normalized;
 }
 
 function evaluateMatches(node, query) {
@@ -390,8 +474,9 @@ function renderStats() {
 }
 
 function buildActionLink(url, text, className) {
-  if (!url) return '';
-  return `<a class="${className}" href="${escapeHtml(url)}" target="_blank" rel="noreferrer noopener">${escapeHtml(text)}</a>`;
+  const safeUrl = sanitizeExternalUrl(url);
+  if (!safeUrl) return '';
+  return `<a class="${className}" href="${escapeHtml(safeUrl)}" target="_blank" rel="noreferrer noopener" referrerpolicy="no-referrer">${escapeHtml(text)}</a>`;
 }
 
 function renderInlineNodeDetails(node) {
@@ -401,6 +486,9 @@ function renderInlineNodeDetails(node) {
         <div class="inline-node-details__meta">
           <span class="badge category-meta">${node.displayResourceCount} resource${node.displayResourceCount === 1 ? '' : 's'}</span>
           <span class="badge category-meta">${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}</span>
+          ${node.restricted && typeof node.sourceCount === 'number'
+            ? `<span class="badge restricted-badge">Placeholder count: ${node.sourceCount}</span>`
+            : ''}
         </div>
       </div>
     `;
@@ -421,6 +509,23 @@ function renderInlineNodeDetails(node) {
     ? '<span class="badge restricted-badge">Restricted placeholder</span>'
     : '';
 
+  const insecureUrlBadge = node.isInsecureUrl
+    ? '<span class="badge insecure-link">HTTP link</span>'
+    : '';
+
+  const urlActions = node.url
+    ? `
+      <div class="inline-node-details__actions">
+        ${buildActionLink(node.url, 'Open resource', 'primary-link')}
+        ${buildActionLink(node.url, 'Open in new tab', 'secondary-btn')}
+      </div>
+    `
+    : `
+      <div class="inline-node-details__actions">
+        <span class="secondary-btn secondary-btn--disabled" aria-disabled="true">Invalid or unsupported URL</span>
+      </div>
+    `;
+
   return `
     <div class="inline-node-details__body">
       <p class="inline-node-details__description">
@@ -431,11 +536,9 @@ function renderInlineNodeDetails(node) {
         ${verificationBadge}
         ${verifiedDateBadge}
         ${restrictedBadge}
+        ${insecureUrlBadge}
       </div>
-      <div class="inline-node-details__actions">
-        ${buildActionLink(node.url, 'Open resource', 'primary-link')}
-        ${buildActionLink(node.url, 'Open in new tab', 'secondary-btn')}
-      </div>
+      ${urlActions}
     </div>
   `;
 }
@@ -608,10 +711,13 @@ function makeTreeNode(node) {
   label.className = 'node-label';
   label.type = 'button';
   label.dataset.nodeId = node.id;
-  label.innerHTML = highlight(node.displayName || node.name || '', currentQuery);
   label.setAttribute('aria-expanded', node.isFolder ? String(expanded.has(node.id)) : String(openInlineIds.has(node.id)));
+  if (selectedId === node.id) {
+    label.setAttribute('aria-current', 'true');
+  }
+  label.innerHTML = highlight(node.displayName || node.name || '', currentQuery);
 
-  label.addEventListener('click', (event) => {
+  label.addEventListener('click', event => {
     event.preventDefault();
     selectedId = node.id;
 
@@ -640,6 +746,15 @@ function makeTreeNode(node) {
       `${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'}`,
       `${node.categoryCount} subcategor${node.categoryCount === 1 ? 'y' : 'ies'} inside this category`
     );
+
+    if (node.restricted && typeof node.sourceCount === 'number') {
+      appendBadge(
+        row,
+        'badge restricted-badge',
+        `Restricted count: ${node.sourceCount}`,
+        `Restricted placeholder count from source: ${node.sourceCount}`
+      );
+    }
   } else {
     if (node.requiresAccount) {
       appendBadge(row, 'badge account', 'Account', 'Account required');
@@ -656,14 +771,24 @@ function makeTreeNode(node) {
       appendBadge(row, 'badge restricted-badge', 'Restricted', 'Restricted placeholder');
     }
 
+    if (node.isInsecureUrl) {
+      appendBadge(row, 'badge insecure-link', 'HTTP', 'This resource uses HTTP, not HTTPS');
+    }
+
     if (node.url) {
       const openBtn = document.createElement('a');
       openBtn.className = 'tree-open-btn';
       openBtn.href = node.url;
       openBtn.target = '_blank';
       openBtn.rel = 'noreferrer noopener';
+      openBtn.referrerPolicy = 'no-referrer';
       openBtn.textContent = 'Open';
       row.appendChild(openBtn);
+    } else {
+      const invalidBadge = document.createElement('span');
+      invalidBadge.className = 'badge invalid-link';
+      invalidBadge.textContent = 'Invalid URL';
+      row.appendChild(invalidBadge);
     }
   }
 
@@ -730,6 +855,10 @@ function renderLegendOnly() {
         <div class="legend-item">
           <span class="badge restricted-badge">Restricted</span>
           <span>Placeholder entry shown without exposing direct public links.</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge insecure-link">HTTP</span>
+          <span>The resource uses HTTP instead of HTTPS.</span>
         </div>
       </div>
     </div>
@@ -834,7 +963,7 @@ function exportVisibleResultsToMarkdown() {
 
   rows.forEach(row => {
     lines.push(
-      `| ${row.category || ''} | ${row.name || ''} | ${row.url || ''} | ${String(row.description || '').replace(/\|/g, '\\|')} | ${row.requiresAccount || ''} | ${row.lastVerified || ''} | ${row.restricted || ''} |`
+      `| ${escapeHtml(row.category || '')} | ${escapeHtml(row.name || '')} | ${escapeHtml(row.url || '')} | ${escapeHtml(String(row.description || '').replace(/\|/g, '\\|'))} | ${escapeHtml(row.requiresAccount || '')} | ${escapeHtml(row.lastVerified || '')} | ${escapeHtml(row.restricted || '')} |`
     );
   });
 
@@ -842,7 +971,8 @@ function exportVisibleResultsToMarkdown() {
 }
 
 function csvEscape(value) {
-  const stringValue = String(value ?? '');
+  const safeValue = csvSafe(value);
+  const stringValue = String(safeValue ?? '');
   if (/[",\n]/.test(stringValue)) {
     return `"${stringValue.replaceAll('"', '""')}"`;
   }
@@ -884,6 +1014,24 @@ function exportVisibleResultsToCsv() {
   downloadTextFile('visible-results.csv', lines.join('\n'), 'text/csv;charset=utf-8');
 }
 
+function normalizeBuildMeta(input) {
+  if (!input || typeof input !== 'object') {
+    return { ...DEFAULT_BUILD_META };
+  }
+
+  return {
+    version: normalizeString(input.version || DEFAULT_BUILD_META.version, DEFAULT_BUILD_META.version),
+    pushedAt: normalizeString(input.pushedAt || DEFAULT_BUILD_META.pushedAt, DEFAULT_BUILD_META.pushedAt),
+    commit: normalizeString(input.commit || DEFAULT_BUILD_META.commit),
+    shortSha: normalizeString(input.shortSha || DEFAULT_BUILD_META.shortSha),
+    runNumber: normalizeString(String(input.runNumber ?? DEFAULT_BUILD_META.runNumber)),
+    sourceRepo: normalizeString(input.sourceRepo || DEFAULT_BUILD_META.sourceRepo),
+    sourceRef: normalizeString(input.sourceRef || DEFAULT_BUILD_META.sourceRef),
+    sourceSha: normalizeString(input.sourceSha || DEFAULT_BUILD_META.sourceSha),
+    sourceShortSha: normalizeString(input.sourceShortSha || DEFAULT_BUILD_META.sourceShortSha)
+  };
+}
+
 async function loadBuildMeta() {
   try {
     const response = await fetch('./data/build-meta.json', { cache: 'no-store' });
@@ -893,10 +1041,7 @@ async function loadBuildMeta() {
     }
 
     const json = await response.json();
-    buildMeta = {
-      ...DEFAULT_BUILD_META,
-      ...json
-    };
+    buildMeta = normalizeBuildMeta(json);
   } catch (error) {
     console.warn('Could not load build metadata:', error);
     buildMeta = { ...DEFAULT_BUILD_META };
@@ -1030,8 +1175,34 @@ function applyThemePreference() {
   }
 }
 
+function assertRequiredDom() {
+  const required = [
+    ['treeContainer', treeContainer],
+    ['detailsContainer', detailsContainer],
+    ['searchInput', searchInput],
+    ['accountFilter', accountFilter],
+    ['clearSearchBtn', clearSearchBtn],
+    ['expandAllBtn', expandAllBtn],
+    ['collapseAllBtn', collapseAllBtn],
+    ['themeToggleBtn', themeToggleBtn],
+    ['treeStatus', treeStatus],
+    ['exportMarkdownBtn', exportMarkdownBtn],
+    ['exportCsvBtn', exportCsvBtn],
+    ['statCategories', statCategories],
+    ['statLinks', statLinks],
+    ['statAccount', statAccount]
+  ];
+
+  const missing = required.filter(([, el]) => !el).map(([name]) => name);
+  if (missing.length > 0) {
+    throw new Error(`Missing required DOM element(s): ${missing.join(', ')}`);
+  }
+}
+
 async function init() {
-  const response = await fetch('./data/tree.json');
+  assertRequiredDom();
+
+  const response = await fetch('./data/tree.json', { cache: 'no-store' });
 
   if (!response.ok) {
     throw new Error(`Failed to load tree.json (${response.status} ${response.statusText})`);
@@ -1044,7 +1215,12 @@ async function init() {
   selectedId = null;
   openInlineIds = new Set();
 
-  root = enrichTree(data);
+  const normalizedRoot = normalizeTreeNode(data, null, 0, { count: 0 });
+  if (!normalizedRoot) {
+    throw new Error('tree.json could not be normalized');
+  }
+
+  root = normalizedRoot;
   computeDerivedStats(root);
   resetExpansion();
   applyThemePreference();
@@ -1099,7 +1275,7 @@ exportCsvBtn.addEventListener('click', exportVisibleResultsToCsv);
 
 treeContainer.addEventListener('keydown', handleTreeKeyboardNavigation);
 
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', event => {
   if (event.key === '/' && document.activeElement !== searchInput) {
     event.preventDefault();
     searchInput.focus();
@@ -1112,5 +1288,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 init().catch(error => {
-  treeContainer.innerHTML = `<div class="details-card"><h3>Could not load data</h3><p>${escapeHtml(String(error))}</p></div>`;
+  if (treeContainer) {
+    treeContainer.innerHTML = `<div class="details-card"><h3>Could not load data</h3><p>${escapeHtml(String(error))}</p></div>`;
+  }
 });

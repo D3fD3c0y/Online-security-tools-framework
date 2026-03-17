@@ -26,6 +26,91 @@
       ]
     },
     {
+      "name": "Download Malwares Samples",
+      "children": [
+        {
+          "name": "AnyRun",
+          "type": "link",
+          "url": "https://app.any.run/#register",
+          "description": "Interactive online sandbox. Also perform sample download from URL. Use the corporate account.",
+          "requiresAccount": true,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "Cape",
+          "type": "link",
+          "url": "https://cape.contextis.com/",
+          "description": "Context's cuckoo sandbox. Also perform sample download from URL.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "Hybrid-Analysis",
+          "type": "link",
+          "url": "https://www.hybrid-analysis.com/",
+          "description": "CrowdStrike's public sandbox. Also perform sample download from URL. Free account required to download samples.",
+          "requiresAccount": true,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "MalShare",
+          "type": "link",
+          "url": "https://malshare.com",
+          "description": "The MalShare Project is a collaborative effort to create a community driven public malware repository that works to build additional tools to benefit the security community at large.",
+          "requiresAccount": true,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "MalwareBazaar Database",
+          "type": "link",
+          "url": "https://bazaar.abuse.ch/browse/",
+          "description": "MalwareBazaar is a project from abuse.ch with the goal of sharing malware samples with the infosec community, AV vendors and threat intelligence providers.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "Polyswarm",
+          "type": "link",
+          "url": "https://polyswarm.network/",
+          "description": "Crowdsourced Malware Analysis for new and emerging threats. Free and premium services.",
+          "requiresAccount": true,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "Triage",
+          "type": "link",
+          "url": "https://tria.ge/",
+          "description": "Hatching Triage is our state-of-the-art malware analysis sandbox designed for cross-platform support (Windows, Android, Linux, and macOS), high-volume malware analysis capabilities, and malware configuration extraction for dozens of malware families. Free account required.",
+          "requiresAccount": true,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "VX-underground",
+          "type": "link",
+          "url": "https://vx-underground.org/samples.html",
+          "description": "A free Malware repository providing researchers access to samples.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "VirusBay",
+          "type": "link",
+          "url": "https://beta.virusbay.io/",
+          "description": "VirusBay is a web-based, collaboration platform that connects security operations center (SOC) professionals with relevant malware researchers.",
+          "requiresAccount": true,
+          "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "VirusShare",
+          "type": "link",
+          "url": "https://virusshare.com/",
+          "description": "A free Malware repository providing researchers access to samples.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-16"
+        }
+      ]
+    },
+    {
       "name": "Encoder / Decoder",
       "children": [
         {
@@ -187,6 +272,59 @@
           "type": "link",
           "url": "https://www.threat-intel.xyz/",
           "description": "Free and Open Source Threat Intelligence Feeds.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        }
+      ]
+    },
+    {
+      "name": "LoLBaS Projects",
+      "children": [
+        {
+          "name": "GTFOBins",
+          "type": "link",
+          "url": "https://gtfobins.github.io/",
+          "description": "Curated list of Unix binaries that can be exploited by an attacker to bypass local security restrictions.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "LOLBAS (Living Off The Land Binaries and Scripts)",
+          "type": "link",
+          "url": "https://lolbas-project.github.io/",
+          "description": "Document every binary, script, and library that can be used for Living Off The Land techniques.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "LOLDrivers",
+          "type": "link",
+          "url": "https://www.loldrivers.io/",
+          "description": "Living Off The Land Drivers is a curated list of Windows drivers used by adversaries to bypass security controls and carry out attacks. The project helps security professionals stay informed and mitigate potential threats.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "LOLESXi",
+          "type": "link",
+          "url": "https://lolesxi-project.github.io/LOLESXi/",
+          "description": "LOLESXi features a comprehensive list of binaries/scripts natively available in VMware ESXi that adversaries have utilised in their operations.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "LOLRMM",
+          "type": "link",
+          "url": "https://lolrmm.io/",
+          "description": "LOLRMM is a curated list of Remote Monitoring and Management (RMM) tools that could potentially be abused by threat actors.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "LOLOL",
+          "type": "link",
+          "url": "https://lolol.farm/",
+          "description": "A great collection of resources to thrive off the land",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
         }
@@ -456,6 +594,27 @@
       ]
     },
     {
+      "name": "Reconnaissance",
+      "children": [
+        {
+          "name": "BuiltWith",
+          "type": "link",
+          "url": "https://builtwith.com/",
+          "description": "Website profiler, lead generation, competitive analysis and business intelligence tool providing technology adoption, ecommerce data and usage analytics for the internet.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Paste Site Search",
+          "type": "link",
+          "url": "https://inteltechniques.com/tools/Pastes.html#gsc.tab=0",
+          "description": "Search 90+ paste sites. Filter by source & keyword.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        }
+      ]
+    },
+    {
       "name": "Signature (Sigma / YARA)",
       "children": [
         {
@@ -487,6 +646,65 @@
           "type": "link",
           "url": "https://sigmasearchengine.com/",
           "description": "Search Engine related to Sigma Rule Repository",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        }
+      ]
+    },
+    {
+      "name": "Social Media",
+      "children": [
+        {
+          "name": "BeenVerified",
+          "type": "link",
+          "url": "https://www.beenverified.com/",
+          "description": "Provide you with access to public information that was formerly only available to big companies and people with deep pockets in a way that is easy, affordable, and fast. For U.S only.",
+          "requiresAccount": false
+        },
+        {
+          "name": "Instagram Explorer",
+          "type": "link",
+          "url": "https://www.osintcombine.com/free-osint-tools/instagram-explorer",
+          "description": "Find images on Instagram by date at particular locations. This tool makes searching easier and more efficient.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Namechk",
+          "type": "link",
+          "url": "https://namechk.com/",
+          "description": "Free username and domain search tool. We're the fastest and most efficient way for you to search for your desired username across hundreds of social networks and domain extension - all at once.",
+          "requiresAccount": false
+        },
+        {
+          "name": "Reddit Post Analyzer",
+          "type": "link",
+          "url": "https://www.osintcombine.com/free-osint-tools/reddit-post-analyser",
+          "description": "Use this OSINT tool to analyze Reddit posts. Enter the post URL to get a downloadable file which outlines comment metadata like time, timezone and username, plus sentiment ranking.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Social Geo Lens",
+          "type": "link",
+          "url": "https://www.osintcombine.com/free-osint-tools/social-geo-lens",
+          "description": "Conduct geo-searching on social media platforms. The map-based interface makes it easy to use and the design means you remain compliant with relevant terms of service.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "TikTok Quick Search",
+          "type": "link",
+          "url": "https://www.osintcombine.com/free-osint-tools/tiktok-quick-search",
+          "description": "Search usernames and hashtags on TikTok via a browser. All results take the user to the source on the TikTok.com website or are provided as a Google search result.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Whatsmyname",
+          "type": "link",
+          "url": "https://whatsmyname.app/",
+          "description": "Use this OSINT tool to find usernames across many websites.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
         }
@@ -902,6 +1120,67 @@
           "type": "link",
           "url": "https://www.zoomeye.ai/",
           "description": "Cyberspace Search Engine recording information of devices, websites, services and components, etc.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        }
+      ]
+    },
+    {
+      "name": "Vulnerabilities",
+      "children": [
+        {
+          "name": "CVE2EPSS",
+          "type": "link",
+          "url": "https://www.cve2epss.com/",
+          "description": "",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "CVEdetails.com",
+          "type": "link",
+          "url": "https://www.cvedetails.com/",
+          "description": "CVEdetails.com offers a complete CVE database enhanced with additional information including advisories, exploits, tools, source code changes and much more.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Exploit Database",
+          "type": "link",
+          "url": "https://www.exploit-db.com/",
+          "description": "Archive of Exploits, Shellcode and security papers.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "National Vulnerability Database (NVD)",
+          "type": "link",
+          "url": "https://nvd.nist.gov/vuln/search",
+          "description": "A collection of vulnerability data that helps security professionals identify and fix cyber threats. The NVD is maintained by the National Institute of Standards and Technology (NIST).",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "The Open Cloud Vulnerability & Security Issue Database",
+          "type": "link",
+          "url": "https://www.cloudvulndb.org/",
+          "description": "An open project to list all known cloud vulnerabilities and CSP security issues.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "VulDB",
+          "type": "link",
+          "url": "https://vuldb.com/",
+          "description": "Vulnarability database worldwide with more than 111 000 entries available.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Vulmon",
+          "type": "link",
+          "url": "https://vulmon.com/",
+          "description": "Vulmon is a vulnerability search engine with vulnerability intelligence features. Vulmon conducts full text search in its database; therefore, you can search everything related to vulnerabilities. It includes CVE ID, vulnerability types, vendors, products, exploits, operating systems and anything else related to vulnerabilities.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
         }

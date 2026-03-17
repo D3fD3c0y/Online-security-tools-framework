@@ -4,13 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Online Security Tools Framework</title>
+
   <meta
     name="description"
     content="Defensive-oriented online security tools framework generated from a curated source repository."
   />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self';
+      style-src 'self';
+      img-src 'self' data: https:;
+      connect-src 'self';
+      object-src 'none';
+      frame-src 'none';
+      base-uri 'none';
+      form-action 'none';
+      upgrade-insecure-requests;
+      block-all-mixed-content
+    "
+  />
+
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#tree-container">Skip to collapsible tree</a>
+
   <main class="page-shell">
     <section class="hero">
       <div>
@@ -37,6 +58,7 @@
           type="search"
           placeholder="Search categories, tools, descriptions, URLs, or verification dates"
           autocomplete="off"
+          spellcheck="false"
         />
       </div>
 
@@ -85,7 +107,12 @@
           <span id="tree-status" class="subtle">Showing all resources</span>
         </div>
 
-        <div id="tree-container" class="tree-container" aria-live="polite"></div>
+        <div
+          id="tree-container"
+          class="tree-container"
+          aria-live="polite"
+          aria-label="Collapsible resource tree"
+        ></div>
       </article>
     </section>
 

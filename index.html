@@ -1,96 +1,130 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Interactive, GitHub-hosted defensive security services tree" />
-  <title>Security Services Tree</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Online Security Tools Framework</title>
+  <meta
+    name="description"
+    content="Defensive-oriented online security tools framework generated from a curated source repository."
+  />
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
-  <div class="page-shell">
-    <header class="hero">
+  <main class="page-shell">
+    <section class="hero">
       <div>
-        <p class="eyebrow">GitHub Pages • Static HTML/CSS/JS</p>
-        <h1>Security Services Tree</h1>
+        <p class="eyebrow">Defensive tooling reference</p>
+        <h1>Online Security Tools Framework</h1>
         <p class="hero-text">
-          Interactive defensive-only resource explorer with collapsible tree navigation,
-          search, filters, and a details pane.
+          Search, expand, and inspect a curated defensive-oriented tree of online security resources.
+          Use the inline cards inside the tree to review item metadata without leaving the page.
         </p>
       </div>
+
       <div class="hero-actions">
-        <button id="expand-all" class="secondary-btn">Expand all</button>
-        <button id="collapse-all" class="secondary-btn">Collapse all</button>
-        <button id="theme-toggle" class="secondary-btn" aria-pressed="false">Toggle theme</button>
+        <button id="expand-all" type="button">Expand all</button>
+        <button id="collapse-all" type="button">Collapse all</button>
+        <button id="theme-toggle" type="button" aria-pressed="false">Toggle theme</button>
       </div>
-    </header>
-
-    <section class="toolbar" aria-label="Controls">
-      <label class="search-wrap" for="search-input">
-        <span class="visually-hidden">Search</span>
-        <input id="search-input" type="search" placeholder="Search tools, descriptions, categories…" autocomplete="off" />
-      </label>
-
-      <label class="checkbox-wrap">
-        <input id="account-filter" type="checkbox" />
-        <span>Only show no-account items</span>
-      </label>
-
-      <button id="clear-search" class="ghost-btn">Clear</button>
     </section>
 
-    <section class="stats-grid" aria-label="Stats">
+    <section class="toolbar">
+      <div class="search-wrap">
+        <label class="visually-hidden" for="search-input">Search resources</label>
+        <input
+          id="search-input"
+          type="search"
+          placeholder="Search categories, tools, descriptions, URLs, or verification dates"
+          autocomplete="off"
+        />
+      </div>
+
+      <label class="checkbox-wrap" for="account-filter">
+        <input id="account-filter" type="checkbox" />
+        <span>No-account only</span>
+      </label>
+
+      <button id="clear-search" type="button" class="ghost-btn">Clear</button>
+    </section>
+
+    <section class="stats-grid" aria-label="Framework statistics">
       <article class="stat-card">
         <span class="stat-label">Categories</span>
         <strong id="stat-categories">0</strong>
       </article>
+
       <article class="stat-card">
         <span class="stat-label">Resources</span>
         <strong id="stat-links">0</strong>
       </article>
+
       <article class="stat-card">
-        <span class="stat-label">Visible</span>
-        <strong id="stat-visible">0</strong>
-      </article>
-      <article class="stat-card">
-        <span class="stat-label">Needs account</span>
+        <span class="stat-label">Account required</span>
         <strong id="stat-account">0</strong>
       </article>
     </section>
 
-    <main class="content-grid">
-      <section class="panel panel-tree" aria-labelledby="tree-title">
+    <section class="content-stack">
+      <article class="panel details-panel-horizontal">
         <div class="panel-header">
-          <h2 id="tree-title">Collapsible tree</h2>
-          <span id="tree-status" class="subtle"></span>
+          <h2>Details</h2>
+          <span class="subtle">Legend only</span>
         </div>
-        <div id="tree-container" class="tree-container" role="tree"></div>
-      </section>
 
-      <aside class="panel panel-details" aria-labelledby="details-title">
+        <div id="details-container" class="details-card">
+          <div class="legend-card">
+            <h4 class="legend-title">Legend</h4>
+            <div class="legend-grid">
+              <div class="legend-item">
+                <span class="badge category-meta">12 resources</span>
+                <span>Category contains this many resources.</span>
+              </div>
+              <div class="legend-item">
+                <span class="badge account">Account required</span>
+                <span>Sign-in is needed for part or all of the service.</span>
+              </div>
+              <div class="legend-item">
+                <span class="badge verify-fresh">Fresh</span>
+                <span>Verified recently.</span>
+              </div>
+              <div class="legend-item">
+                <span class="badge verify-aging">Aging</span>
+                <span>Verified, but should be reviewed soon.</span>
+              </div>
+              <div class="legend-item">
+                <span class="badge verify-stale">Stale</span>
+                <span>Verification is old and should be refreshed.</span>
+              </div>
+              <div class="legend-item">
+                <span class="badge verify-unknown">Unverified</span>
+                <span>No verification date has been recorded yet.</span>
+              </div>
+              <div class="legend-item">
+                <span class="badge restricted-badge">Restricted</span>
+                <span>Placeholder entry shown without exposing direct public links.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel tree-panel">
         <div class="panel-header">
-          <h2 id="details-title">Details</h2>
-          <span class="subtle">Select any node</span>
+          <h2>Collapsible tree</h2>
+          <span id="tree-status" class="subtle">Showing all resources</span>
         </div>
-        <div id="details-container" class="details-empty">
-          <p>Select a category or resource to inspect its metadata here.</p>
-        </div>
-      </aside>
-    </main>
+
+        <div id="tree-container" class="tree-container" aria-live="polite"></div>
+      </article>
+    </section>
 
     <footer class="footer">
-      <p>
-        Source-inspired dataset:
-        <a href="https://github.com/D3fD3c0y/Free-online-security-services" target="_blank" rel="noreferrer noopener">
-          D3fD3c0y/Free-online-security-services
-        </a>
-      </p>
-      <p>Static site — ideal for GitHub Pages.</p>
+      This framework is intended as a defensive-oriented reference for investigation, detection engineering,
+      and security operations workflows.
     </footer>
-  </div>
+  </main>
 
   <script src="./assets/js/app.js"></script>
 </body>
 </html>
-

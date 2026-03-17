@@ -24,12 +24,11 @@ SOURCE_URL = f"https://github.com/{SOURCE_OWNER}/{SOURCE_REPO}"
 
 # Categories intentionally excluded from the generated framework
 EXCLUDED_CATEGORIES = {
-    "Download Malwares Samples",
-    "LoLBaS Projects",
-    "Reconnaissance",
-    "Social Media",
-    "Vulnerabilities",
-    "Windows built-in feature to use for offensive",
+#    "Download Malwares Samples",
+#    "LoLBaS Projects",
+#    "Reconnaissance",
+#    "Social Media",
+#    "Vulnerabilities",
 }
 
 CATEGORY_RENAMES = {

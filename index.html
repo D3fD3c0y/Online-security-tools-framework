@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Online Security Tools Framework</title>
   <meta
     name="description"
@@ -46,6 +46,8 @@
       </label>
 
       <button id="clear-search" type="button" class="ghost-btn">Clear</button>
+      <button id="export-markdown" type="button" class="ghost-btn">Export Markdown</button>
+      <button id="export-csv" type="button" class="ghost-btn">Export CSV</button>
     </section>
 
     <section class="stats-grid" aria-label="Framework statistics">
@@ -73,39 +75,7 @@
         </div>
 
         <div id="details-container" class="details-card">
-          <div class="legend-card">
-            <h4 class="legend-title">Legend</h4>
-            <div class="legend-grid">
-              <div class="legend-item">
-                <span class="badge category-meta">12 resources</span>
-                <span>Category contains this many resources.</span>
-              </div>
-              <div class="legend-item">
-                <span class="badge account">Account required</span>
-                <span>Sign-in is needed for part or all of the service.</span>
-              </div>
-              <div class="legend-item">
-                <span class="badge verify-fresh">Fresh</span>
-                <span>Verified recently.</span>
-              </div>
-              <div class="legend-item">
-                <span class="badge verify-aging">Aging</span>
-                <span>Verified, but should be reviewed soon.</span>
-              </div>
-              <div class="legend-item">
-                <span class="badge verify-stale">Stale</span>
-                <span>Verification is old and should be refreshed.</span>
-              </div>
-              <div class="legend-item">
-                <span class="badge verify-unknown">Unverified</span>
-                <span>No verification date has been recorded yet.</span>
-              </div>
-              <div class="legend-item">
-                <span class="badge restricted-badge">Restricted</span>
-                <span>Placeholder entry shown without exposing direct public links.</span>
-              </div>
-            </div>
-          </div>
+          <!-- Legend is rendered here by app.js -->
         </div>
       </article>
 

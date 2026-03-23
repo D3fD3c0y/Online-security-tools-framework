@@ -824,6 +824,14 @@
           "description": "Threat Intelligence Platform for companies to aggregate and act upon threat intelligence.",
           "requiresAccount": true,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "ThreatLandscape Browser-based STIX 2.1 bundle visualizer",
+          "type": "link",
+          "url": "https://stix-viewer.threatlandscape.io/",
+          "description": "Llightweight STIX 2.1 viewer that runs entirely in the browser. No login, no install, just upload a bundle JSON and get an interactive relationship graph.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-23"
         }
       ]
     },

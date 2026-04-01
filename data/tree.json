@@ -818,6 +818,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "The Cert graveyard",
+          "type": "link",
+          "url": "https://certgraveyard.org/",
+          "description": "The Cert Graveyard is a centralized place to document the abuse of code-signing certificates.",
+          "requiresAccount": false,
+          "lastVerified": "2026-04-01"
+        },
+        {
           "name": "ThreatConnect",
           "type": "link",
           "url": "https://app.threatconnect.com/login.xhtml",

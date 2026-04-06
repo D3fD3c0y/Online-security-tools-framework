@@ -778,6 +778,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "Lighthouse feed finder",
+          "type": "link",
+          "url": "https://lighthouseapp.io/tools/feed-finder",
+          "description": "Search for a RSS Feed for a domain.",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
           "name": "Malpedia",
           "type": "link",
           "url": "https://malpedia.caad.fkie.fraunhofer.de/library",
@@ -810,12 +818,12 @@
           "lastVerified": "2026-03-17"
         },
         {
-          "name": "Lighthouse feed finder",
+          "name": "STB cybersecurity",
           "type": "link",
-          "url": "https://lighthouseapp.io/tools/feed-finder",
-          "description": "Search for a RSS Feed for a domain.",
+          "url": "https://stbcybersecurity.com/",
+          "description": "160+ live threat feeds. Ransomware tracking. CVE monitoring. When your business faces an attack, our incident response team is one call away.",
           "requiresAccount": false,
-          "lastVerified": "2026-03-17"
+          "lastVerified": "2026-04-06"
         },
         {
           "name": "The Cert graveyard",

@@ -252,6 +252,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "ExtSentry",
+          "type": "link",
+          "url": "https://extsentry.github.io/",
+          "description": "Community-driven browser extension threat intelligence. IOC feeds for malicious and sensitive browser extensions across 16+ security platform formats.",
+          "requiresAccount": false,
+          "lastVerified": "2026-04-13"
+        },
+        {
           "name": "FireHOL IPList",
           "type": "link",
           "url": "http://iplists.firehol.org/",

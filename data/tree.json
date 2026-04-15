@@ -794,6 +794,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "LunarChain Threat Intelligence Agent Beta",
+          "type": "link",
+          "url": "https://chatgpt.com/g/g-689bbf19a698819193e4701581ec8c66-threat-intelligence-agent-beta",
+          "description": "A threat intelligence agent with access to LunarChains Intelligence graph",
+          "requiresAccount": true,
+          "lastVerified": "2026-04-15"
+        },
+        {
           "name": "Malpedia",
           "type": "link",
           "url": "https://malpedia.caad.fkie.fraunhofer.de/library",

@@ -864,6 +864,14 @@
           "description": "Llightweight STIX 2.1 viewer that runs entirely in the browser. No login, no install, just upload a bundle JSON and get an interactive relationship graph.",
           "requiresAccount": false,
           "lastVerified": "2026-03-23"
+        },
+        {
+          "name": "ThreatNexus",
+          "type": "link",
+          "url": "https://www.threatnexus.online/",
+          "description": "Nation-State APT Intelligence",
+          "requiresAccount": false,
+          "lastVerified": "2026-04-17"
         }
       ]
     },

@@ -802,6 +802,14 @@
           "lastVerified": "2026-04-15"
         },
         {
+          "name": "MalExt Sentry",
+          "type": "link",
+          "url": "https://malext.io/",
+          "description": "Browser extension threat intelligence — live tracking of malicious and policy-violating extensions: Chrome Web Store removals, active-in-the-wild detections, and community reports · automated store monitoring · adware · credential theft · session hijacking · cryptomining",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-14"
+        },
+        {
           "name": "Malpedia",
           "type": "link",
           "url": "https://malpedia.caad.fkie.fraunhofer.de/library",

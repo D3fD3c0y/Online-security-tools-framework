@@ -135,12 +135,60 @@
       "name": "Framework",
       "children": [
         {
+          "name": "CIS Critical Security Controls",
+          "type": "link",
+          "url": "https://www.cisecurity.org/controls",
+          "description": "The CIS Critical Security Controls (CIS Controls) are a prioritized set of CIS Safeguards to defend against the most prevalent cyber attacks against systems and networks. They are mapped to and referenced by multiple legal, regulatory, and policy frameworks. PDF version at https://learn.cisecurity.org/cis-controls-v8-1-guide-pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "CISA Zero Trust Maturity Model",
+          "type": "link",
+          "url": "https://www.cisa.gov/resources-tools/resources/zero-trust-maturity-model",
+          "description": "The Zero Trust Maturity Model is one of many roadmaps for agencies to reference as they transition towards a zero trust architecture. PDF version at https://www.cisa.gov/sites/default/files/2023-04/CISA_Zero_Trust_Maturity_Model_Version_2_508c.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "CSA Cloud Controls Matrix (CCM)",
+          "type": "link",
+          "url": "https://cloudsecurityalliance.org/artifacts/cloud-controls-matrix-v4-1",
+          "description": "The Cloud Controls Matrix (CCM) is a cybersecurity control framework made up of 207 controls across 17 security domains. The CCM maps to industry best practices and is considered the standard for cloud security and privacy. The accompanying Consensus Assessment Initiative Questionnaire (CAIQ) provides a set of “yes/no” questions to assess security controls. PDF version at https://cloudsecurityalliance.org/download/artifacts/cloud-controls-matrix-v4-1",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "Cybersecurity Capability Maturity Model (C2M2)",
+          "type": "link",
+          "url": "https://www.energy.gov/ceser/cybersecurity-capability-maturity-model-c2m2",
+          "description": "The Cybersecurity Capability Maturity Model (C2M2) is a free tool to help organizations evaluate their cybersecurity capabilities and optimize security investments. It uses a set of industry-vetted cybersecurity practices focused on both information technology (IT) and operations technology (OT) assets and environments. PDF version at https://www.energy.gov/sites/default/files/2021-07/C2M2%20Version%202.0%20July%202021_508.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "Cybersecurity Maturity Model Certification (CMMC) 2.0)",
+          "type": "link",
+          "url": "https://dodcio.defense.gov/CMMC/",
+          "description": "CMMC 2.0 is the U.S. Department of Defense (DoD) framework designed to protect defense supply chain data. It requires defense contractors and subcontractors to implement robust cybersecurity practices to safeguard Controlled Unclassified Information (CUI) and Federal Contract Information (FCI). PDF version at https://dodcio.defense.gov/Portals/0/Documents/CMMC/ModelOverview_V2.0_FINAL2_20211202_508.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
           "name": "DISARM Red Framework",
           "type": "link",
           "url": "https://disarmfoundation.github.io/disarm-navigator/",
           "description": "The DISARM Red Framework provides a common language for documenting influence operations. When different organisations describe what they're seeing in the same terms, they can share intelligence, and gain a better understanding of actors' manipulative behaviours.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Essential Eight Maturity Model",
+          "type": "link",
+          "url": "https://www.cyber.gov.au/business-government/asds-cyber-security-frameworks/essential-eight/essential-eight-maturity-model",
+          "description": "The Essential Eight Maturity Model is a prioritized cybersecurity framework developed by the Australian Signals Directorate (ASD) to protect internet-connected IT networks. It breaks down eight foundational mitigation strategies into four distinct maturity levels to help organizations benchmark and improve their cyber resilience. PDF version at https://www.cyber.gov.au/sites/default/files/2023-03/PROTECT%20-%20Essential%20Eight%20Maturity%20Model%20%28November%202022%29.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
         },
         {
           "name": "Mitre Att&ck Enterprise Matrix",
@@ -223,12 +271,68 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "NCSC Cyber Assessment Framework",
+          "type": "link",
+          "url": "https://www.ncsc.gov.uk/collection/cyber-assessment-framework",
+          "description": "TThe CAF is a collection of cyber security guidance for organisations that play a vital role in the day-to-day life of the UK, with a focus on essential functions. PDF version at https://www.ncsc.gov.uk/sites/default/files/documents/NCSC-Cyber-Assessment-Framework-4.0.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "NIST Cybersecurity Framework 2.0",
+          "type": "link",
+          "url": "https://csf.tools/reference/nist-cybersecurity-framework/v2-0/",
+          "description": "The Cybersecurity Framework (CSF) 2.0 is designed to help organizations of all sizes and sectors — including industry, government, academia, and nonprofit — to manage and reduce their cybersecurity risks. It is useful regardless of the maturity level and technical sophistication of an organization’s cybersecurity programs. PDF version at https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-37r2.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "NIST Risk Management Framework (SP 800-37 Rev. 2)",
+          "type": "link",
+          "url": "https://csrc.nist.gov/pubs/sp/800/37/r2/final",
+          "description": "The NIST Risk Management Framework (RMF SP 800-37 Rev. 2) is a comprehensive, flexible, and repeatable 7-step process developed by the National Institute of Standards and Technology. It integrates security, privacy, and cyber supply chain risk management into the system development life cycle, allowing organizations to custom-fit cybersecurity practices to their specific needs. PDF version at https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "NIST Security and Privacy Controls Framework (SP 800-53 Rev. 5)",
+          "type": "link",
+          "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+          "description": "The NIST Security and Privacy Controls Framework is a foundational catalog of security and privacy controls developed by the National Institute of Standards and Technology (NIST). It provides a comprehensive, customizable framework to help organizations protect their information systems and data from a wide range of threats. PDF version at https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "OSWAP Application Security Verification Standard",
+          "type": "link",
+          "url": "https://owasp.org/www-project-application-security-verification-standard/",
+          "description": "The OWASP Application Security Verification Standard (ASVS) Project provides a basis for testing web application technical security controls and also provides developers with a list of requirements for secure development. PDF version at https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/OWASP_Application_Security_Verification_Standard_5.0.0_en.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
           "name": "OSWAP BLADE",
           "type": "link",
           "url": "https://www.bladeframework.org/",
           "description": "The OWASP Business Logic Attack Definition (BLADE) Framework, is an open-source knowledge-base created to help cybersecurity professionals identify the phases, tactics and techniques used by adversaries to exploit weaknesses in the business logic of web facing systems (websites and APIs)",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "OSWAP Top 10",
+          "type": "link",
+          "url": "https://github.com/OWASP/Top10",
+          "description": "The OWASP Top 10 is the latest industry awareness document highlighting the most critical web application vulnerabilities. It reflects an evolution in how modern software is built and attacked, introducing new categories for supply chain and error-handling flaws",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
+        },
+        {
+          "name": "Secure Design and Development Cybersecurity Capability Maturity Model (SD2-C2M2)",
+          "type": "link",
+          "url": "https://sd2-c2m2.pnnl.gov/",
+          "description": "TThe Secure Design and Development Cybersecurity Capability Maturity Model (SD2-C2M2) is a specialized assessment tool developed by the U.S. Department of Energy (DOE) and Pacific Northwest National Laboratory (PNNL). It helps hardware/software developers and integrators measure and improve the cybersecurity maturity of their design and development lifecycles. PDF version at https://sd2-c2m2.pnnl.gov/documents/SD2-C2M2_Next-Generation_Cyber_Resilience_by_Design.pdf",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-22"
         }
       ]
     },

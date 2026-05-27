@@ -1039,6 +1039,22 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "MITRE Fight Fraud Framework Matrix",
+          "type": "link",
+          "url": "https://ctid.mitre.org/fraud#/",
+          "description": "The MITRE Fight Fraud Framework™ (F3) is a curated knowledge base of tactics and techniques used by financial fraud actors, derived from real-world observations of cyber fraud incidents.",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-27"
+        },
+        {
+          "name": "Microsoft Azure Threat Research Matrix",
+          "type": "link",
+          "url": "https://microsoft.github.io/Azure-Threat-Research-Matrix/",
+          "description": "The purpose of the Azure Threat Research Matrix (ATRM) is to educate readers on the potential of Azure-based tactics, techniques, and procedures (TTPs).",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-27"
+        },
+        {
           "name": "Microsoft DevOps Threat Matrix",
           "type": "link",
           "url": "https://www.microsoft.com/en-us/security/blog/2023/04/06/devops-threat-matrix/",

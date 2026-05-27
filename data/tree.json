@@ -930,6 +930,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "OSIRIS AI",
+          "type": "link",
+          "url": "https://osirisai.live/",
+          "description": "OSIRIS (Open Source Intelligence & Reconnaissance Integrated System) is a real-time global intelligence dashboard built for situational awareness across multiple intelligence domains. This production-grade OSINT platform combines live flight tracking, CCTV networks, earthquake monitoring, conflict zone mapping, maritime intelligence, cyber reconnaissance, satellite monitoring, and 24/7 global news feeds—all in one GPU-accelerated interface.",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-27"
+        },
+        {
           "name": "Poc-on-Github by Nomi-Sec",
           "type": "link",
           "url": "https://github.com/nomi-sec/PoC-in-GitHub",

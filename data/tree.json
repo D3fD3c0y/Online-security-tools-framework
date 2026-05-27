@@ -1297,10 +1297,18 @@
       "name": "Vulnerabilities",
       "children": [
         {
+          "name": "AWASP Top Ten",
+          "type": "link",
+          "url": "https://awasp.org/",
+          "description": "Web application vulnerabilities ranked by real-world exploitation frequency — not theoretical risk. Drawn from breach reports, CVE data, and incident response findings.",
+          "requiresAccount": false,
+          "lastVerified": "2026-05-27"
+        },
+        {
           "name": "CVE2EPSS",
           "type": "link",
           "url": "https://www.cve2epss.com/",
-          "description": "",
+          "description": "A simple web app which enables you to quickly and easily lookup EPSS scores for a CVE ID.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
         },

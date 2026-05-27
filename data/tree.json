@@ -1087,18 +1087,18 @@
           "lastVerified": "2026-03-17"
         },
         {
-          "name": "Space Attack Research and Tactic Analysis (SPARTA) matrix",
-          "type": "link",
-          "url": "https://sparta.aerospace.org/",
-          "description": "SPARTA is intended to provide unclassified information to space professionals about how spacecraft may be compromised via cyber and traditional counterspace means.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
           "name": "Own the Browser",
           "type": "link",
           "url": "https://ownthebrowser.com/browsers/",
           "description": "Browser Directory - Explore browser profiles and assessments",
+          "requiresAccount": false,
+          "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Space Attack Research and Tactic Analysis (SPARTA) matrix",
+          "type": "link",
+          "url": "https://sparta.aerospace.org/",
+          "description": "SPARTA is intended to provide unclassified information to space professionals about how spacecraft may be compromised via cyber and traditional counterspace means.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
         }

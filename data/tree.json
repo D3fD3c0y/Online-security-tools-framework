@@ -1375,6 +1375,14 @@
           "description": "Vulmon is a vulnerability search engine with vulnerability intelligence features. Vulmon conducts full text search in its database; therefore, you can search everything related to vulnerabilities. It includes CVE ID, vulnerability types, vendors, products, exploits, operating systems and anything else related to vulnerabilities.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Vulncheck",
+          "type": "link",
+          "url": "https://www.vulncheck.com/",
+          "description": "VulnCheck helps organizations outpace adversaries with vulnerability intelligence that predicts avenues of attack with speed and accuracy.",
+          "requiresAccount": true,
+          "lastVerified": "2026-06-02"
         }
       ]
     }

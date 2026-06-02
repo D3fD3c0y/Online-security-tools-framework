@@ -5,6 +5,27 @@
   "sourceUrl": "https://github.com/D3fD3c0y/Free-online-security-services",
   "children": [
     {
+      "name": "AI",
+      "children": [
+        {
+          "name": "AIGregator",
+          "type": "link",
+          "url": "https://aigregator.com/",
+          "description": "Find the right AI tool, fast. Search, compare, and bookmark across every AI category.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
+        },
+        {
+          "name": "PromptIntel",
+          "type": "link",
+          "url": "https://promptintel.novahunting.ai/",
+          "description": "A collaborative threat intel platform to identify patterns and artifacts indicating potential exploitation or misuse of Large Language Models.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
+        }
+      ]
+    },
+    {
       "name": "Documentation Referencing",
       "children": [
         {

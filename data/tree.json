@@ -16,6 +16,14 @@
           "lastVerified": "2026-06-02"
         },
         {
+          "name": "Claude-OSINT",
+          "type": "link",
+          "url": "https://github.com/elementalsouls/Claude-OSINT",
+          "description": "Two paired Claude skills · 90+ recon modules · 48 secret-regex patterns · 80+ dorks · 9 read-only credential validators · 27 attack-path templates · 5,500+ lines of structured tradecraft. Drop-in SKILL.md files that turn Claude into a god-mode external recon operator for authorized red-team and bug-bounty engagements.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
+        },
+        {
           "name": "PromptIntel",
           "type": "link",
           "url": "https://promptintel.novahunting.ai/",

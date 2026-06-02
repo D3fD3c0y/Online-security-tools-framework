@@ -624,6 +624,14 @@
       "name": "Network",
       "children": [
         {
+          "name": "DNSAudit",
+          "type": "link",
+          "url": "https://dnsaudit.io/",
+          "description": "Find DNS Exposure Before Attackers Do. Uncover exposed services, risky DNS patterns, and misconfigurations attackers already see.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
+        },
+        {
           "name": "DynamiteLab COmmunity",
           "type": "link",
           "url": "https://dynamitelab.com/",

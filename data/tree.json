@@ -656,7 +656,7 @@
       ]
     },
     {
-      "name": "Malware Analysis",
+      "name": "Malware Analysis (sandbox)",
       "children": [
         {
           "name": "AnyRun",

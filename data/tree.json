@@ -68,10 +68,10 @@
         {
           "name": "Cape",
           "type": "link",
-          "url": "https://cape.contextis.com/",
+          "url": "https://capesandbox.com/",
           "description": "Context's cuckoo sandbox. Also perform sample download from URL.",
           "requiresAccount": false,
-          "lastVerified": "2026-03-16"
+          "lastVerified": "2026-06-03"
         },
         {
           "name": "Hybrid-Analysis",
@@ -80,6 +80,14 @@
           "description": "CrowdStrike's public sandbox. Also perform sample download from URL. Free account required to download samples.",
           "requiresAccount": true,
           "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "Joe Sandbox",
+          "type": "link",
+          "url": "https://www.joesandbox.com/",
+          "description": "a comprehensive, cloud-based malware and phishing analysis platform developed by Joe Security.",
+          "requiresAccount": true,
+          "lastVerified": "2026-06-03"
         },
         {
           "name": "MalShare",
@@ -106,27 +114,11 @@
           "lastVerified": "2026-03-16"
         },
         {
-          "name": "Triage",
-          "type": "link",
-          "url": "https://tria.ge/",
-          "description": "Hatching Triage is our state-of-the-art malware analysis sandbox designed for cross-platform support (Windows, Android, Linux, and macOS), high-volume malware analysis capabilities, and malware configuration extraction for dozens of malware families. Free account required.",
-          "requiresAccount": true,
-          "lastVerified": "2026-03-16"
-        },
-        {
           "name": "VX-underground",
           "type": "link",
           "url": "https://vx-underground.org/samples.html",
           "description": "A free Malware repository providing researchers access to samples.",
           "requiresAccount": false,
-          "lastVerified": "2026-03-16"
-        },
-        {
-          "name": "VirusBay",
-          "type": "link",
-          "url": "https://beta.virusbay.io/",
-          "description": "VirusBay is a web-based, collaboration platform that connects security operations center (SOC) professionals with relevant malware researchers.",
-          "requiresAccount": true,
           "lastVerified": "2026-03-16"
         },
         {
@@ -136,6 +128,14 @@
           "description": "A free Malware repository providing researchers access to samples.",
           "requiresAccount": false,
           "lastVerified": "2026-03-16"
+        },
+        {
+          "name": "VirusTotal",
+          "type": "link",
+          "url": "https://www.virustotal.com/gui/home/upload",
+          "description": "Analyse suspicious files, domains, IPs and URLs to detect malware and other breaches, automatically share them with the security community. Premium accoutn required to downlaod malware sample",
+          "requiresAccount": true,
+          "lastVerified": "2026-06-01"
         }
       ]
     },

@@ -164,6 +164,14 @@
       "name": "Framework",
       "children": [
         {
+          "name": "Anthropic LLM ATT&CK Navigator",
+          "type": "link",
+          "url": "https://red.anthropic.com/2026/attack-navigator/navigator",
+          "description": "Companion to Mapping AI-Enabled Cyber Threats mapped to MITRE ATT&CK v18 and scored on the AI Risk Enablement Score (ARiES).",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-04"
+        },
+        {
           "name": "CIS Critical Security Controls",
           "type": "link",
           "url": "https://www.cisecurity.org/controls",

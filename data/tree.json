@@ -34,6 +34,35 @@
       ]
     },
     {
+      "name": "Free Online Archives",
+      "children": [
+        {
+          "name": "Archive.today",
+          "type": "link",
+          "url": "https://archive.ph/",
+          "description": "Archive.today is a time capsule for web pages! It takes a 'snapshot' of a webpage that will always be online even if the original page disappears. It saves a text and a graphical copy of the page for better accuracy and provides a short and reliable link to an unalterable record of any web page including those from Web 2.0 sites.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-08"
+        },
+        {
+          "name": "Software Heritage",
+          "type": "link",
+          "url": "https://archive.softwareheritage.org/",
+          "description": "We collect and preserve software in source code form, because software embodies our technical and scientific knowledge and humanity cannot afford the risk of losing it.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-08"
+        },
+        {
+          "name": "Wayback Machine",
+          "type": "link",
+          "url": "https://web.archive.org/",
+          "description": "The Internet Archive, a 501(c)(3) non-profit, is building a digital library of Internet sites and other cultural artifacts in digital form. Like a paper library, we provide free access to researchers, historians, scholars, people with print disabilities, and the general public. Our mission is to provide Universal Access to All Knowledge.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-08"
+        }
+      ]
+    },
+    {
       "name": "Documentation Referencing",
       "children": [
         {

@@ -1012,6 +1012,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "Rulehound",
+          "type": "link",
+          "url": "https://rulehound.com/rules",
+          "description": "An index of publicly available and open-source threat detection rulesets",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-15"
+        },
+        {
           "name": "Sigma HQ",
           "type": "link",
           "url": "https://github.com/SigmaHQ/sigma",

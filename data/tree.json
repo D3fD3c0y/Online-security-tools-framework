@@ -1020,6 +1020,14 @@
           "lastVerified": "2026-06-15"
         },
         {
+          "name": "Sigconverter.io",
+          "type": "link",
+          "url": "https://sigconverter.io/",
+          "description": "sigma rule converter",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-15"
+        },
+        {
           "name": "Sigma HQ",
           "type": "link",
           "url": "https://github.com/SigmaHQ/sigma",

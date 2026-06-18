@@ -871,6 +871,35 @@
       ]
     },
     {
+      "name": "OSINT",
+      "children": [
+        {
+          "name": "Epios",
+          "type": "link",
+          "url": "https://epieos.com/",
+          "description": "The ultimate OSINT tool for email and phone reverse lookup",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-17"
+        },
+        {
+          "name": "Kronikier",
+          "type": "link",
+          "url": "https://kronikier.soxoj.com/",
+          "description": "Get historical contacts for a website from web.archive.org snapshots. Web version of https://github.com/soxoj/kronikier — consider installing the CLI for fuller results and faster scans.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
+        },
+        {
+          "name": "Max Intel — Free OSINT Tools",
+          "type": "link",
+          "url": "https://maxintel.org/",
+          "description": "Max Intel provides 100+ free OSINT tools for investigators, researchers, journalists, and cybersecurity professionals. Open-source intelligence (OSINT) is defined by U.S. Public Law 109-163 as intelligence produced from publicly available information that is collected, exploited, and disseminated in a timely manner to an appropriate audience. Search people, emails, usernames, domains, IP addresses, and more — no registration or API keys required.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-18"
+        }
+      ]
+    },
+    {
       "name": "Phishing",
       "children": [
         {

@@ -1556,6 +1556,14 @@
           "description": "Nation-State APT Intelligence",
           "requiresAccount": false,
           "lastVerified": "2026-04-17"
+        },
+        {
+          "name": "Webamon",
+          "type": "link",
+          "url": "https://intel.webamon.com/",
+          "description": "Advanced threat intelligence platform that scans, monitors, and indexes the web daily. easy to search across domains, IPs, and hashes",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-29"
         }
       ]
     },

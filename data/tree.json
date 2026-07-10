@@ -1925,6 +1925,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "nomi-sec/PoC-in-GitHub",
+          "type": "link",
+          "url": "https://github.com/nomi-sec/PoC-in-GitHub",
+          "description": "📡 PoC auto collect from GitHub. ⚠️ Be careful Malware.",
+          "requiresAccount": false,
+          "lastVerified": "2026-07-10"
+        },
+        {
           "name": "The Open Cloud Vulnerability & Security Issue Database",
           "type": "link",
           "url": "https://www.cloudvulndb.org/",

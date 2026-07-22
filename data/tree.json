@@ -1390,6 +1390,14 @@
       "name": "Threat Intelligence",
       "children": [
         {
+          "name": "CavalierGPT",
+          "type": "link",
+          "url": "https://chatgpt.com/g/g-Rddxw5Vyc-cavaliergpt-cybersecurity-osint-investigations",
+          "description": "CavalierGPT is a powerful assistant built on the Cavalier API, designed to deliver detailed insights into domains, emails, usernames, IPs, keywords, and cybersecurity trends to uncover threats and enhance security. By Hudson Rock",
+          "requiresAccount": false,
+          "lastVerified": "2026-07-22"
+        },
+        {
           "name": "CERT.PL",
           "type": "link",
           "url": "https://mwdb.cert.pl/login",

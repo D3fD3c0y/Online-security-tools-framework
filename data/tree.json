@@ -217,6 +217,14 @@
           "lastVerified": "2026-05-22"
         },
         {
+          "name": "Concealment Layers for Online Anonymity and Knowledge(CLOAK)",
+          "type": "link",
+          "url": "https://opsectechniques.com/",
+          "description": "The Cloak Matrix refers to a structured, interactive knowledge base of cybercriminal concealment measures. Its primary goal is to provide a systematic framework for understanding, analyzing, and referencing the operational security (OpSec) techniques that criminals use to evade detection.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
           "name": "CSA Cloud Controls Matrix (CCM)",
           "type": "link",
           "url": "https://cloudsecurityalliance.org/artifacts/cloud-controls-matrix-v4-1",

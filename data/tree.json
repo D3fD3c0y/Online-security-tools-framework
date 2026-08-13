@@ -1006,8 +1006,81 @@
           "name": "Crowdstrike Adversary Universe",
           "type": "link",
           "url": "https://www.crowdstrike.com/en-us/resources/adversary-universe-podcast/",
-          "description": "Welcome to the Adversary Universe podcast, where CrowdStrike",
-          "requiresAccount": false
+          "description": "Welcome to the Adversary Universe podcast, where CrowdStrike reveals the threat actors behind the latest cyberattacks.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "Darknet diaries",
+          "type": "link",
+          "url": "https://darknetdiaries.com/episode/",
+          "description": "Darknet Diaries produces audio stories specifically intended to capture, preserve, and explain the culture around hacking and cyber security in order to educate and entertain both technical and non-technical audiences.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "ENISA on Air",
+          "type": "link",
+          "url": "https://open.spotify.com/show/033OMmjnOZMv4IYbWWseOi",
+          "description": "ENISA launches a podcast series to decrypt the latest cybersecurity developments and discuss issues that shape Europe's cybersecurity landscape.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "ESET Research Podcast",
+          "type": "link",
+          "url": "https://www.welivesecurity.com/en/podcasts/",
+          "description": "N/A",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "Fortinet Cybersecurity Podast",
+          "type": "link",
+          "url": "https://www.fortinet.com/resources/podcast",
+          "description": "Stay up-to-date with the latest threat intelligence and product news from Fortinet experts.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "Group-IB Masked actor",
+          "type": "link",
+          "url": "https://www.group-ib.com/masked-actors/",
+          "description": "N/A",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "Malicious life",
+          "type": "link",
+          "url": "https://malicious.life/",
+          "description": "Malicious Life by Cybereason tells the unknown stories of the history of cybersecurity, with comments and reflections by real hackers, security experts, journalists, and politicians.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "Microsoft Threat Intelligence Podcast",
+          "type": "link",
+          "url": "https://open.spotify.com/show/7kaJodHquryFw5YDw0BShj",
+          "description": "Join us to hear stories from the Microsoft Threat Intelligence community as they navigate the ever-evolving threat landscape - uncovering APTs, cybercrime gangs, malware, vulnerabilities, and other weird and cool tools and tactics in the world of cyber threats.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "SecurityNow",
+          "type": "link",
+          "url": "https://twit.tv/shows/security-now",
+          "description": "Cybersecurity guru Steve Gibson joins Leo Laporte every Tuesday. Steve and Leo break down the latest cybercrime and hacking stories, offering a deep understanding of what's happening and how to protect yourself and your business. Security Now is a must listen for security professionals every week.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "The Defender’s Advantage Podcast",
+          "type": "link",
+          "url": "https://open.spotify.com/show/7CFsvR9lOLZiNoVDUltL9X",
+          "description": "Learn about the latest threat and cybersecurity trends on The Defender’s Advantage Podcast! Hear from experts in the field as Host Luke McNamara, from Google Threat Intelligence Group, interviews analysts, researchers and other guests on the frontlines of the latest attacks..",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
         }
       ]
     },

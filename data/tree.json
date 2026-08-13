@@ -1003,92 +1003,11 @@
       "name": "Podcast",
       "children": [
         {
-          "name": "CheckPhish",
+          "name": "Crowdstrike Adversary Universe",
           "type": "link",
-          "url": "https://checkphish.ai/",
-          "description": "Free Scanner to detect phishing & fraudulent sites in real-time.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "Code Beautify",
-          "type": "link",
-          "url": "https://codebeautify.org/htmlviewer/",
-          "description": "HTML viewer.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "DNSTwister",
-          "type": "link",
-          "url": "https://dnstwister.report/",
-          "description": "The anti-phishing domain name search engine.",
-          "requiresAccount": true,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "Google G Suite Toolbox",
-          "type": "link",
-          "url": "https://toolbox.googleapps.com/apps/messageheader/",
-          "description": "Headers parser.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "Is it Phishing",
-          "type": "link",
-          "url": "https://isitphishing.org/",
-          "description": "Based on a heuristic technology coupled with machine learning, ISTIPHISHING is efficient against agile and small waves that contain shortened dynamics links.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "MXToolBox",
-          "type": "link",
-          "url": "https://mxtoolbox.com/EmailHeaders.aspx",
-          "description": "Headers parser.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "Microsoft Email headers Analyzer",
-          "type": "link",
-          "url": "https://testconnectivity.microsoft.com/?tabid=mha",
-          "description": "Headers parser.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "Phish report",
-          "type": "link",
-          "url": "https://phish.report/analysis/",
-          "description": "Automatically analyses phishing sites and identifies the best ways you can report it to speed up the takedown process.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "PhisHunt",
-          "type": "link",
-          "url": "https://phishunt.io/",
-          "description": "Up-to-date feed of active phishing and scam sites, along with details and quick updates to help you understand this threat.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "Phishtank",
-          "type": "link",
-          "url": "https://www.phishtank.com",
-          "description": "PhishTank is a collaborative clearing house for data and information about phishing on the Internet.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
-        },
-        {
-          "name": "UnPHP",
-          "type": "link",
-          "url": "https://www.unphp.net/",
-          "description": "Free service for analyzing obfuscated and malicious PHP code.",
-          "requiresAccount": false,
-          "lastVerified": "2026-03-17"
+          "url": "https://www.crowdstrike.com/en-us/resources/adversary-universe-podcast/",
+          "description": "Welcome to the Adversary Universe podcast, where CrowdStrike",
+          "requiresAccount": false
         }
       ]
     },

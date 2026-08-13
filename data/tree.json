@@ -24,12 +24,11 @@
           "lastVerified": "2026-06-02"
         },
         {
-          "name": "PromptIntel",
+          "name": "Crowdstrike Taxonomy of Prompt Injection Methods",
           "type": "link",
-          "url": "https://promptintel.novahunting.ai/",
-          "description": "A collaborative threat intel platform to identify patterns and artifacts indicating potential exploitation or misuse of Large Language Models.",
-          "requiresAccount": false,
-          "lastVerified": "2026-06-02"
+          "url": "https://assets.crowdstrike.com/is/content/crowdstrikeinc/Prompt-Injection-Taxonomy-Posterpdf",
+          "description": "This taxonomy diagram include",
+          "requiresAccount": false
         }
       ]
     },

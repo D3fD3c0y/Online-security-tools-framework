@@ -8,12 +8,28 @@
       "name": "AI",
       "children": [
         {
+          "name": "Anthropic Cybersecurity Skills",
+          "type": "link",
+          "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+          "description": "The largest open-source cybersecurity skills library for AI agents.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-02"
+        },
+        {
           "name": "AIGregator",
           "type": "link",
           "url": "https://aigregator.com/",
           "description": "Find the right AI tool, fast. Search, compare, and bookmark across every AI category.",
           "requiresAccount": false,
           "lastVerified": "2026-06-02"
+        },
+        {
+          "name": "Claude agent skill creator",
+          "type": "link",
+          "url": "https://github.com/FrancyJGLisboa/agent-skill-creator",
+          "description": "Turn any workflow into reusable AI agent software that installs on 17 platforms — no spec writing, no prompt engineering, no coding required.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-02"
         },
         {
           "name": "Claude-OSINT",

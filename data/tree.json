@@ -1715,6 +1715,14 @@
           "lastVerified": "2026-04-17"
         },
         {
+          "name": "Trukno.ai Attack Flow Generator",
+          "type": "link",
+          "url": "https://www.trukno.ai/dashboard/hunt",
+          "description": "TruKno Hunt is a threat‑hunting dashboard that turns URLs or PDFs into structured attack‑flow analyses. It helps CTI and IR teams quickly extract adversary behaviors and map them to detections.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
           "name": "Webamon",
           "type": "link",
           "url": "https://intel.webamon.com/",

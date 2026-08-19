@@ -64,12 +64,20 @@
           "lastVerified": "2026-08-13"
         },
         {
+          "name": "Microsoft Agent Governance Toolkit",
+          "type": "link",
+          "url": "https://github.com/microsoft/agent-governance-toolkit",
+          "description": "Policy enforcement, identity, sandboxing, and SRE for autonomous AI agents.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
+        },
+        {
           "name": "PromptIntel",
           "type": "link",
           "url": "https://promptintel.novahunting.ai/",
           "description": "A collaborative threat intel platform to identify patterns and artifacts indicating potential exploitation or misuse of Large Language Models.",
           "requiresAccount": false,
-          "lastVerified": "2026-06-02"
+          "lastVerified": "2026-08-02"
         }
       ]
     },

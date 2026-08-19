@@ -32,6 +32,22 @@
           "lastVerified": "2026-08-13"
         },
         {
+          "name": "Feedly Claude intelligence requirements builder",
+          "type": "link",
+          "url": "https://github.com/feedly/skills/tree/main/skills/intelligence-requirements-builder",
+          "description": "We’ve created a free Claude skill that turns a vague stakeholder question (or questions) into structured intelligence requirements, with EEIs and decision-support identified. How to available [HERE](https://feedly.com/ti-essentials/posts/claude-skill-intelligence-requirements-builder).",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "Feedly complete cti prompt library",
+          "type": "link",
+          "url": "https://github.com/feedly/skills/tree/main/prompts/feedly-complete-cti-prompt-library",
+          "description": "Every prompt published across four Feedly TI Essentials posts, gathered into one folder. Each prompt is a separate markdown file with its prompt text plus context on what it does, which report it came from, and the workflow it supports.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
           "name": "PromptIntel",
           "type": "link",
           "url": "https://promptintel.novahunting.ai/",
@@ -896,6 +912,14 @@
           "description": "The ultimate OSINT tool for email and phone reverse lookup",
           "requiresAccount": false,
           "lastVerified": "2026-06-17"
+        },
+        {
+          "name": "Grep.app",
+          "type": "link",
+          "url": "https://grep.app/",
+          "description": "Effortlessly search for code, files, and paths across a million GitHub repositories.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-17"
         },
         {
           "name": "Kronikier",
@@ -1811,6 +1835,14 @@
           "description": "The Talos IP and Domain Reputation Center is the world’s most comprehensive real-time threat detection network.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Cerast Intelligence",
+          "type": "link",
+          "url": "https://search.cerast-intelligence.com/",
+          "description": "Search observed domains for exposed paths and misconfigurations.",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-19"
         },
         {
           "name": "DNSDumpster",

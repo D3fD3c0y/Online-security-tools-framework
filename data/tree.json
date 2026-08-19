@@ -27,8 +27,17 @@
           "name": "Crowdstrike Taxonomy of Prompt Injection Methods",
           "type": "link",
           "url": "https://assets.crowdstrike.com/is/content/crowdstrikeinc/Prompt-Injection-Taxonomy-Posterpdf",
-          "description": "This taxonomy diagram include",
-          "requiresAccount": false
+          "description": "This taxonomy diagram include catalogs 200+ named techniques across direct and indirect injection paths and attacker prompting methods, provides a structured hierarchy showing the full risks of fast-moving GenAI threats, maps the rapidly evolving landscape of PI techniques",
+          "requiresAccount": false,
+          "lastVerified": "2026-08-13"
+        },
+        {
+          "name": "PromptIntel",
+          "type": "link",
+          "url": "https://promptintel.novahunting.ai/",
+          "description": "A collaborative threat intel platform to identify patterns and artifacts indicating potential exploitation or misuse of Large Language Models.",
+          "requiresAccount": false,
+          "lastVerified": "2026-06-02"
         }
       ]
     },

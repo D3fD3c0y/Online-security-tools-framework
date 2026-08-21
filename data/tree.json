@@ -1355,6 +1355,14 @@
           "url": "https://darkwebinformer.com/threat-actor-database/",
           "description": "Aggregated threat actor database capturing profiles, leak sites, and active ransomware syndicates.",
           "requiresAccount": false,
+          "lastVerified": "2026-08-18"
+        },
+        {
+          "name": "Huntress",
+          "type": "link",
+          "url": "https://www.huntress.com/threat-library/threat-actors",
+          "description": "Browse the Huntress Threat Library to explore threat actor profiles, learn the origins of ransomware attacks, and gain actionable insights into tactics, techniques, and procedures (TTPs), prevention strategies, and best practices to protect your organization.",
+          "requiresAccount": false,
           "lastVerified": "2026-06-18"
         },
         {

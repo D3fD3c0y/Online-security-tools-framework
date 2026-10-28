@@ -35,6 +35,14 @@
           "name": "Claude-OSINT",
           "type": "link",
           "url": "https://github.com/elementalsouls/Claude-OSINT",
+          "description": "We built a free Claude Skill that turns a threat intel report or log sample into Sigma rules. It uses a profile of your environment, so the rules are relevant to your specific telemetry. You get one Sigma rule and validation note per behavior, the backend query, and a package summary.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
+        },
+        {
+          "name": "Claude Skill 02: Create Sigma Rules",
+          "type": "link",
+          "url": "https://feedly.com/ti-essentials/posts/claude-skill-02-create-sigma-rules",
           "description": "Two paired Claude skills · 90+ recon modules · 48 secret-regex patterns · 80+ dorks · 9 read-only credential validators · 27 attack-path templates · 5,500+ lines of structured tradecraft. Drop-in SKILL.md files that turn Claude into a god-mode external recon operator for authorized red-team and bug-bounty engagements.",
           "requiresAccount": false,
           "lastVerified": "2026-06-02"
@@ -70,6 +78,14 @@
           "description": "Policy enforcement, identity, sandboxing, and SRE for autonomous AI agents.",
           "requiresAccount": false,
           "lastVerified": "2026-06-02"
+        },
+        {
+          "name": "prompts.chat",
+          "type": "link",
+          "url": "https://prompts.chat/prompts",
+          "description": "Prompts, skills, workflows and bots: everything your agents need, in one place. Share, discover, and install from the community. Free and open source, self-host with complete privacy.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
         },
         {
           "name": "PromptIntel",
@@ -313,6 +329,14 @@
           "lastVerified": "2026-05-22"
         },
         {
+          "name": "iPurple.team ATT&CK Navigator",
+          "type": "link",
+          "url": "https://navigator.ipurple.team/",
+          "description": "Purple Team Coverage Matrix.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
+        },
+        {
           "name": "Mitre Att&ck Enterprise Matrix",
           "type": "link",
           "url": "https://attack.mitre.org/matrices/enterprise/",
@@ -391,6 +415,14 @@
           "description": "The EMB3D Threat Model provides a cultivated knowledge base of cyber threats to embedded devices, providing a common understanding of these threats with security mechanisms to mitigate them.",
           "requiresAccount": false,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Mitre Fight Fraud Framework",
+          "type": "link",
+          "url": "https://ctid.mitre.org/fightfraud#/",
+          "description": "The MITRE Fight Fraud Framework™ (F3) is a curated knowledge base of tactics and techniques used by financial fraud actors, derived from real-world observations of cyber fraud incidents. The framework includes behaviors that characterize known fraud TTPs and references existing MITRE ATT&CK® cyber techniques as applicable to financial fraud.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
         },
         {
           "name": "NCSC Cyber Assessment Framework",
@@ -930,12 +962,28 @@
       "name": "OSINT",
       "children": [
         {
+          "name": "Darknyx",
+          "type": "link",
+          "url": "https://darknyx.com/",
+          "description": "Search onion sites and leak dumps, follow ransomware groups and public Telegram channels, and track marketplace trends. Free OSINT research and safety tools from NexVision Lab, indexed over Tor.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
+        },
+        {
           "name": "Epios",
           "type": "link",
           "url": "https://epieos.com/",
           "description": "The ultimate OSINT tool for email and phone reverse lookup",
           "requiresAccount": false,
           "lastVerified": "2026-06-17"
+        },
+        {
+          "name": "File Phish",
+          "type": "link",
+          "url": "https://greylensresearch.github.io/filephish/",
+          "description": "A query builder that allows you to discover exposed documents, sensitive files, and hidden data across the web in seconds.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
         },
         {
           "name": "Grep.app",
@@ -960,6 +1008,14 @@
           "description": "Max Intel provides 100+ free OSINT tools for investigators, researchers, journalists, and cybersecurity professionals. Open-source intelligence (OSINT) is defined by U.S. Public Law 109-163 as intelligence produced from publicly available information that is collected, exploited, and disseminated in a timely manner to an appropriate audience. Search people, emails, usernames, domains, IP addresses, and more — no registration or API keys required.",
           "requiresAccount": false,
           "lastVerified": "2026-06-18"
+        },
+        {
+          "name": "SpiderFoot",
+          "type": "link",
+          "url": "https://spiderfoot.tools/",
+          "description": "Skip the complex GitHub deployments and Python environments. Run comprehensive open-source intelligence (OSINT) scans, trace digital footprints, and uncover attack surfaces instantly. No installation required.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
         }
       ]
     },
@@ -2168,6 +2224,14 @@
           "description": "VulnCheck helps organizations outpace adversaries with vulnerability intelligence that predicts avenues of attack with speed and accuracy.",
           "requiresAccount": true,
           "lastVerified": "2026-06-02"
+        },
+        {
+          "name": "Zero Day Clock",
+          "type": "link",
+          "url": "https://zerodayclock.com/",
+          "description": "Quarterly comparison with the same three months a year earlier, across the three metrics that matter most.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
         }
       ]
     }

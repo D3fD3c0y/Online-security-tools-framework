@@ -1603,6 +1603,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "ICHI – Internet Cyber Health Index",
+          "type": "link",
+          "url": "https://ichi.global/",
+          "description": "ichi.global is a free, publicly accessible, source-transparent cybersecurity daily barometer. It aggregates and synthesizes signals from 20+ named public sources — including CISA KEV, Shodan, Censys, CVE/NVD, abuse.ch, and CERT advisories — into a single outside-in daily view of the Internet's current threat posture.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
+        },
+        {
           "name": "Intelligence X",
           "type": "link",
           "url": "https://intelx.io/",

@@ -2005,6 +2005,14 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "ShieldLabs Anonymity Checker",
+          "type": "link",
+          "url": "https://demo.shieldlabs.ai/anonymity-checker",
+          "description": "Free current-browser diagnostic showing public IP, device identifiers, a risk score, and VPN, proxy, Tor and bot signals.",
+          "requiresAccount": false,
+          "lastVerified": "2026-10-28"
+        },
+        {
           "name": "Shodan",
           "type": "link",
           "url": "https://www.shodan.io/",

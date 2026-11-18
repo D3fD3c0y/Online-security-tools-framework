@@ -994,6 +994,14 @@
           "lastVerified": "2026-08-17"
         },
         {
+          "name": "HudsonRock Domain Check",
+          "type": "link",
+          "url": "https://www.hudsonrock.com/are-you-compromised",
+          "description": "Check if your company's domain has been compromised by Infostealer malware in recent cybercrime campaigns",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
           "name": "Kronikier",
           "type": "link",
           "url": "https://kronikier.soxoj.com/",
@@ -1010,12 +1018,68 @@
           "lastVerified": "2026-06-18"
         },
         {
-          "name": "SpiderFoot",
+          "name": "Nikto.Online",
+          "type": "link",
+          "url": "https://nikto.online/",
+          "description": "Analyze Your Site. Vulnerability Scanner, Identify servers and software Detect XSS vulnerabilities.",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
+          "name": "OSINT Tools and Resources Handbook",
+          "type": "link",
+          "url": "https://www.osinthandbook.com/",
+          "description": "An index of OSINT tools and resources curated by the team at i-Intelligence GmbH.",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
+          "name": "Pastebin Search",
+          "type": "link",
+          "url": "https://pastebin-search.com/",
+          "description": "Search 33 Paste Sites",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
+          "name": "Qualys SSL Labs",
+          "type": "link",
+          "url": "https://www.ssllabs.com/ssltest/",
+          "description": "This free online service performs a deep analysis of the configuration of any SSL web server on the public Internet.",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
+          "name": "Ransomlook",
+          "type": "link",
+          "url": "https://www.ransomlook.io/",
+          "description": "Open-source intelligence on 647 ransomware groups, markets and threat actors. Updated live since 2022.",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
+          "name": "Security lists for SOC/DFIR detections",
+          "type": "link",
+          "url": "https://github.com/mthcht/awesome-lists",
+          "description": "Awesome Security lists for SOC/CERT/CTI.",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
+        },
+        {
+          "name": "SpiderFoot Online",
           "type": "link",
           "url": "https://spiderfoot.tools/",
           "description": "Skip the complex GitHub deployments and Python environments. Run comprehensive open-source intelligence (OSINT) scans, trace digital footprints, and uncover attack surfaces instantly. No installation required.",
           "requiresAccount": false,
           "lastVerified": "2026-10-28"
+        },
+        {
+          "name": "UpGuard Dark Web Scan",
+          "type": "link",
+          "url": "https://www.upguard.com/tools/dark-web-scan",
+          "description": "See how exposed you are on the dark web. Enter your domain. We search eight sources across the underground, and show you what surfaced.",
+          "requiresAccount": false,
+          "lastVerified": "2026-11-18"
         }
       ]
     },

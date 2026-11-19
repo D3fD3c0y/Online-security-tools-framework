@@ -880,12 +880,28 @@
           "lastVerified": "2026-03-17"
         },
         {
+          "name": "RepoSec",
+          "type": "link",
+          "url": "https://reposec.net/",
+          "description": "Scan any repository for malicious code. Detect backdoors, data exfiltration, obfuscated payloads, and more.",
+          "requiresAccount": true,
+          "lastVerified": "2026-11-19"
+        },
+        {
           "name": "Sandblast",
           "type": "link",
           "url": "https://threatpoint.checkpoint.com/ThreatPortal/emulation",
           "description": "Check Point's public version of Threat Emulation.",
           "requiresAccount": true,
           "lastVerified": "2026-03-17"
+        },
+        {
+          "name": "Scanrepo",
+          "type": "link",
+          "url": "https://www.scanrepo.dev/",
+          "description": "Free malware scanner for public repos. Paste a GitHub or Bitbucket URL — 31+ static rules, a 0–100 risk score and a verdict in seconds.",
+          "requiresAccount": true,
+          "lastVerified": "2026-11-19"
         },
         {
           "name": "SecondWrite",
